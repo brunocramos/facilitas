@@ -1,0 +1,79 @@
+@font-face {
+	font-family: 'facilitas';
+	src:url('../font/facilitas.eot?tq1qeg');
+	src:url('../font/facilitas.eot?#iefixtq1qeg') format('embedded-opentype'),
+		url('../font/facilitas.svg?tq1qeg#facilitas') format('svg'),
+		url('../font/facilitas.woff?tq1qeg') format('woff'),
+		url('../font/facilitas.ttf?tq1qeg') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="fac-i-"], [class*=" fac-i-"] {
+	font-family: 'facilitas';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.fac-i-fullscreen-close:before {
+	content: "\e605";
+}
+.fac-i-fullscreen-open:before {
+	content: "\e606";
+}
+.fac-i-audio-desc:before {
+	content: "\e600";
+}
+.fac-i-rewind:before {
+	content: "\e601";
+}
+.fac-i-close:before {
+	content: "\e602";
+}
+.fac-i-closedcaption:before {
+	content: "\e603";
+}
+.fac-i-forward:before {
+	content: "\e604";
+}
+.fac-i-help:before {
+	content: "\e607";
+}
+.fac-i-light:before {
+	content: "\e608";
+}
+.fac-i-pause:before {
+	content: "\e609";
+}
+.fac-i-play:before {
+	content: "\e60a";
+}
+.fac-i-search:before {
+	content: "\e60b";
+}
+.fac-i-settings:before {
+	content: "\e60c";
+}
+.fac-i-sound-full:before {
+	content: "\e60d";
+}
+.fac-i-sound-half:before {
+	content: "\e60e";
+}
+.fac-i-sound-muted:before {
+	content: "\e60f";
+}
+.fac-i-stop:before {
+	content: "\e610";
+}
+.fac-i-subtitle:before {
+	content: "\e611";
+}

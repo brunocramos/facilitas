@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Facilitas Player</title>
+        <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.minicolors.css" />
+        <link type="text/css" rel="stylesheet" href="templates/modern/jqueryui_darkhive/jquery-ui-1.9.2.custom.min.css" />
+        <link type="text/css" rel="stylesheet" href="templates/modern/css/modern.css" />
+        <link rel="stylesheet" type="text/css" href="css/default.css" />
+    </head>
+    
+    <body>
+        <section>
+            <header>
+                <h1 title="Facilitas Player">Facilitas Player</h1>
+                <p>Um reprodutor de vídeos acessível</p>
+            </header>
+            <div id="facilitas">
+                <video controls="controls" id="video" width="854" height="480" data-taglist="tags">
+                    <track src="video/sintel_trailer.srt" kind="subtitle" srclang="pt-BR" label="Português" />
+                    <source src="video/sintel_trailer.mp4" type="video/mp4" />
+                    <source src="video/sintel_trailer.ogv" type="video/ogg" />
+                    <p>Your browser does not support Ogg/Theora.</p>
+                </video>
+                <ul id="tags">
+                    <li><a href="#00:02" title="00:02 - Introdução">Introdução</a></li>
+                    <li><a href="#00:10" title="00:10 - Criadores">Criadores</a></li>
+                    <li><a href="#00:17" title="00:17 - Lutas">Lutas</a></li>
+                    <li><a href="#00:29" title="00:29 - Clímax">Clímax</a></li>
+                    <li><a href="#00:37" title="00:37 - Deserto">Deserto</a></li>
+                    <li><a href="#00:49" title="00:49 - Créditos">Créditos</a></li>         
+                </ul>
+            </div>
+        </section>
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/jquery.minicolors.js"></script>
+        <script src="js/jquery-ui-1.9.2.custom.min.js"></script>
+        <script src="js/Facilitas.min.js"></script>
+        <script>
+            /******** Facilitas Player ********/
+            $("#video").facilitas({
+                 "language"         :  "pt",
+                 "baseLangFolder"   : "js/"
+            }); 
+        </script>
+    </body>
+</html>

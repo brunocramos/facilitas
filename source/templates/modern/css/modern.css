@@ -1,0 +1,151 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(icon.css);
+
+/**************** General Config ****************/
+.facilitas_player {min-width:652px;height:426px;position:relative;z-index:9000;text-align:center;background:#232323;font-size:14px;}
+.facilitas_player a {transition:none}
+.facilitas_player ul, .facilitas_player ol {margin:0;padding:0;list-style:none;}
+.facilitas_player ol {list-style:decimal;}
+.facilitas_player:-webkit-full-screen {position:fixed;left:0;bottom:1px;width: 100% !important;height: auto !important;}
+.facilitas_video {width:auto;height:auto;position:relative;top:0;left:0;z-index:9000;margin:0 auto;padding:0;cursor:pointer;}
+.facilitas_player > .facilitas_toolbar {position:absolute;z-index:9500;left:0;width:100%;height:58px;}
+.facilitas_fr {float:right !important;}
+.facilitas_loading {display:none;width:100%;height:100%;position:absolute;z-index:9100;left:0;top:0;background:rgba(0,0,0,.85)}
+.facilitas_loading_img {width:64px;height:64px;position:relative;z-index:9500;left:50%;top:50%;margin-left:-32px;margin-top:-70px;background:url(../img/loading.gif) rgba(0,0,0,.7) no-repeat center center;padding:10px;border-radius:20px;}
+
+.facilitas_modern .facilitas_player_video {background:#232323;position:relative;z-index:99;}
+.facilitas_player.lightson {z-index:30001;}
+/**************** Template Config ****************/
+/*** Toolbar ***/
+.facilitas_morden .disabled {opacity:.4;}
+.facilitas_modern {border:1px solid #232323;background:#232323;font-family:'Droid Sans', sans-serif;}
+.facilitas_modern > .facilitas_toolbar {background:#232323;border-top:1px solid #3d3d3d;}
+.facilitas_modern .facilitas_controls {display:inline-block;text-align:left;width:auto;float:left;height:40px;padding:0 3px;margin-top:2px;}
+.facilitas_modern .facilitas_controls.fr {float:right !important;}
+.facilitas_modern .facilitas_controls > li {display:inline-block;float:left;height:50px;width:50px;border-left:1px solid #201f3f;text-align:center;position:relative;}
+.facilitas_modern .facilitas_controls > li > a{display:block;height:40px;width:40px;margin-top:5px;line-height:45px;text-decoration: none;color:#ffffff;font-size:14pt;border:2px solid #484848;border-radius:5px;transition:all 0.2s ease-in-out;}
+.facilitas_modern .facilitas_controls > li > a:hover,
+	.facilitas_modern .facilitas_controls > li > a.active {background:#575757;border-color:#575757;}
+.facilitas_modern .facilitas_controls > li > a:focus{border-color: #FF0;}
+.facilitas_modern .facilitas_time{width:auto !important;height:40px !important;line-height:42px;padding:0 6px;color:#FFF;letter-spacing:1px;font-size:10pt;border:2px solid #484848 !important;border-radius:5px;margin:5px 0;background:#484848;}
+
+
+.facilitas_modern .facilitas_btn_light {display:none;height:46px;width:46px;line-height:48px;font-size:18pt;text-align:center;position:absolute;top:20px;right:20px;z-index:9500;background:#484848;border-radius:10px;color:#fff;text-decoration: none;}
+.facilitas_modern .facilitas_btn_light:hover,
+	.facilitas_modern .facilitas_btn_light:focus {color:#ffff00;}
+
+.facilitas_modern .facilitas_btn_light.active {color:#ffff00;}
+.facilitas_modern .facilitas_btn_light.active:hover,
+	.facilitas_modern .facilitas_btn_light.active:focus {color:#fff;}
+
+.facilitas_modern.facilitas_light_bg {background:rgba(0,0,0,.97);position:fixed;width:100%;height:100%;z-index:30000;top:0;left:0;display:none;}
+.facilitas_modern.facilitas_light_bg.active {opacity:1;display:block;}
+
+.facilitas_modern .facilitas_btn_viewport{background-position:0 -224px !important;}.facilitas_modern .facilitas_btn_viewport:hover{background-position:-52px -224px !important;}
+.facilitas_modern .facilitas_btn_viewport_close{background-position:0 -559px !important;}.facilitas_modern .facilitas_btn_viewport_close:hover{background-position:-52px -559px !important;}
+.facilitas_modern .facilitas_btn_pause{background-position:0 -256px !important;}.facilitas_modern .facilitas_btn_pause:hover{background-position:-52px -256px !important;}
+.facilitas_modern .i-fullscreen-open {font-size:16pt;}
+/*** Progress Bar ***/
+.facilitas_modern .facilitas_progress {width:100%;height:15px;position:absolute;left:0;border:1px solid #252740;border-left:none;border-right:none;background:#484848;z-index:9150;text-align:right;line-height:14px;overflow:hidden;}
+.facilitas_modern .facilitas_progbar {width:100%;height:15px;position:absolute;z-index:9250;}
+.facilitas_modern .facilitas_progbar > .facilitas_percent {margin-right:15px;}
+.facilitas_modern .facilitas_progbar .ui-slider-range {height:15px;background:#d9db25;z-index:9250;border-top-right-radius:5px;border-bottom-right-radius:5px;}
+.facilitas_modern .facilitas_progbar .ui-slider-handle {display:block;width:18px;height:22px;background:#fff;border:1px solid #111;position:absolute;right:-10px;top:-3px;z-index:9300;cursor:pointer;}
+.facilitas_modern .facilitas_progbar > .facilitas_stickers {position:absolute;z-index:9300;display:inline-block;width:100%;list-style:none}
+.facilitas_modern .facilitas_progbar > .facilitas_stickers > li {position:absolute;z-index:9300;width:4px;height:15px;}
+.facilitas_modern .facilitas_progbar > .facilitas_stickers > li > a {display:block;width:4px;height:15px;background:#eee;box-shadow:0 0 2px 0px #8897D0;border:1px solid #1D1C41;border-radius:2px;margin-top:-1px;}
+.facilitas_modern .facilitas_progbar > .facilitas_stickers > li > a:hover, .facilitas_stickers .facilitas_selected {background:#f1fd0b !important;transition: all 0.2s ease-in;}
+/*** Buffer Bar ***/
+.facilitas_modern .facilitas_buffbar {width:100%;height:15px;position:absolute;z-index:9200;}
+.facilitas_modern .facilitas_buffbar > .facilitas_percent {margin-right:15px;}
+.facilitas_modern .facilitas_buffbar .ui-slider-handle {display:none;}
+.facilitas_modern .facilitas_buffbar .ui-slider-range { top: 0; height: 100%;background:#666;z-index:9200;border-radius:5px;}
+.facilitas_modern .facilitas_buffbar .ui-slider-range-min { left: 0; }
+.facilitas_modern .facilitas_buffbar .ui-slider-range-max { right: 0; }
+.facilitas_modern .facilitas_buffbar .ui-slider-range { left: 0; width: 100%; }
+.facilitas_modern .facilitas_buffbar .ui-slider-range-facilitas_vol_container min { bottom: 0; }
+.facilitas_modern .facilitas_buffbar .ui-slider-range-max { top: 0; }
+/*** captions ***/
+.facilitas_modern .facilitas_btn_cc {opacity:1;background:#575757;}
+.facilitas_modern .facilitas_btn_cc_disabled{opacity:.4;background:none;}
+
+/*** volume Bar ***/
+.facilitas_modern .facilitas_btn_volume{overflow:visible !important;position:relative;z-index:9500}
+.facilitas_modern .facilitas_btn_container,.facilitas_ccbtn_container{position:absolute;width:40px;height:40px;top:0;left:0;}
+.facilitas_modern .facilitas_nosound{background-position:0 -288px !important;}.facilitas_modern .facilitas_nosound:hover{background-position:-52px -288px !important;}
+.facilitas_modern .facilitas_vol_container{display:none;width:52px;height:100px;position:absolute;left:50%;margin-left:-26px;top:-104px;}
+.facilitas_modern .facilitas_vol_wrapper {position:absolute;left:50%;margin-left:-20px;width:40px;height:100px;position:relative;border:1px solid #575757;background:#575757;box-shadow:0 1px 2px -1px #111;border-radius:5px;}
+
+
+.facilitas_modern .facilitas_control_volume_slider{width:8px;height:90px;position:absolute;left:50%;margin-left:-13px;margin-top:5px;z-index:9500;}
+.facilitas_modern .facilitas_control_volume_slider.ui-widget-content {background:#373737;margin-left:-4px;width:6px}
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-range {width:6px;background:#fff;z-index:9250;border-radius:3px;}
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-handle {display:block;width:22px;height:8px;border:1px solid #575757;background:#fff;margin-left:-2px;margin-bottom:-5px;border:none;z-index:9300;cursor:pointer;}
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-range-min { bottom: 0; }
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-range-max { top: 0; }
+.facilitas_modern .ui-widget-content {background:none;border:none;}
+.facilitas_modern .facilitas_percent {font-size:11px;margin-right:5px;}
+.facilitas_modern .facilitas_seek {display:block;width:22px;height:22px;background:#FFF;border-radius:2px;position:absolute;right:-10px;top:-3px;}
+/*** Tag list ***/
+.facilitas_modern .facilitas_tags {margin-top:59px;text-align: left;background: #232323;line-height:22px;position:relative;z-index:100;}
+.facilitas_modern .facilitas_tags_goto {margin:0;padding:5px 0 0 0;font-size:8pt;color:#FFF;z-index:9300;border-top:1px solid #3d3d3d;text-align:left;text-indent:6px;text-transform: uppercase;}
+.facilitas_modern .facilitas_tags ul {display:inline-block;position:relative;min-height:30px;width:100%;list-style:none;text-align:left;z-index:9300;background:#232323;border:1px solid #232323;margin-left:-1px;padding-bottom: 2px;}
+.facilitas_modern .facilitas_tags ul > li {float:left;line-height:20px;padding:2px;font-size:10pt}
+.facilitas_modern .facilitas_tags a {color:#f1f1f1;text-decoration:none;display:block;padding:8px 10px;height:20px;border-radius:5px;transition: all 0.2s ease-in;border:2px solid #575757;}
+.facilitas_modern .facilitas_tags a:hover,
+ .facilitas_modern .facilitas_tags a:focus,
+ .facilitas_tags .facilitas_selected {background:#575757;color:#fff;}
+/*** Subtitle ***/
+.facilitas_modern .facilitas_subtitle {position:absolute;z-index:9499;width:90%;padding:20px 5% 20px 5%;color:#E1EB1A;bottom:105px;line-height:18px;font-family:"Trebuchet MS", Arial, sans-serif;font-weight:bold;text-shadow:-1px 1px 2px #000,0 1px black, 1px 0 black, 0 -1px black;font-size:14pt;}
+
+.facilitas_modern .facilitas_subtitle.nobackground {background:none;}
+.facilitas_modern .facilitas_subtitle.black {background:#000;}
+.facilitas_modern .facilitas_subtitle.halfblack {background:rgba(0,0,0,0.5);}
+.facilitas_modern .facilitas_subtitle.white {background:#fff;}
+.facilitas_modern .facilitas_subtitle.halfwhite {background:rgba(255,255,255,0.5);}
+/*** Closed Caption ***/
+.facilitas_modern .facilitas_closedcaption {position:absolute;z-index:9499;width:90%;margin:0 5% 0 5%;color:#FF0;top:5px;line-height:18px;font-family:"Trebuchet MS", Arial, sans-serif;font-weight:bold;text-shadow:2px 2px 2px #000;font-size:14pt;}
+/*** Sidebar ***/
+.facilitas_modern .facilitas_sidebar {position:absolute;right:0;display:block;top:-1px;width:190px;padding-bottom:5px;background:#232323;border:1px solid #232323;} 
+.facilitas_modern .facilitas_sidebar header > .facilitas_sidebar_title {width:180px;height:30px;background:#1b1b1b;box-shadow:0 1px 1px -1px #08081a;font-family: 'Droid Sans', Arial, Tahoma, sans-serif;color:#FFF;font-weight:bold;line-height:30px;text-align:left;padding:0 2px 0 5px;text-shadow:1px 1px 1px #000;font-size:12pt;}
+.facilitas_modern .facilitas_sidebar_close {float:right;display:block;height:20px;width:20px;line-height:22px;font-size:9pt;text-align:center;border:1px solid #575757;border-radius:5px;margin-top:4px;}
+.facilitas_modern .facilitas_sidebar_close:hover {background:#575757;}
+
+.facilitas_modern .facilitas_sidebar a {color:#fff;text-decoration:none;}
+.facilitas_modern .facilitas_sidebar_cont {list-style:none;margin:0;padding:0;}
+.facilitas_modern .facilitas_sidebar_cont li {width:180px;height:auto;display:inline-block;box-shadow:0 1px 1px -1px #444;margin-bottom:1px;background:#282828;padding:10px 5px}
+/*** Sidebar > Caption search ***/
+.facilitas_modern .facilitas_sidebar_search {box-shadow:0 1px 1px -1px #08081a;background:#222;padding:3px 5px 3px 5px;text-align:left;display:inlne-block;}
+.facilitas_modern .facilitas_sidebar input {background:#fff;border-radius:6px;border:1px solid #111;width:135px;height:16px;padding:5px;margin:0;font-family:'Droid Sans', Arial, sans-serif;}
+.facilitas_modern .facilitas_btn_inputsearch {float:right;display:block;height:24px;width:24px;line-height:25px;border:2px solid #484848;text-align:center;border-radius:5px;font-size:9pt;}
+.facilitas_modern .facilitas_search_result {margin:0;padding:0;width:190px;height:200px;color:#fefe73 !important;line-height:18px;font-size:10pt;text-align:justify;list-style-position:inside;overflow-y:auto;}
+.facilitas_modern .facilitas_search_result li{padding:8px 5px 8px 5px;border-top:1px solid #0a0915;border-bottom:1px solid #222243;}
+.facilitas_modern .facilitas_search_result li:hover{background:#252344}
+.facilitas_modern .facilitas_search_result li:last-child{border-bottom:none !important;}
+.facilitas_modern .facilitas_search_time {font-style:italic;}
+.facilitas_modern .facilitas_search_description {color:#FFF !important;}
+/*** Sidebar > Settings ***/
+.facilitas_modern .facilitas_settings {text-align:left;}
+.facilitas_modern .facilitas_settings label {color:#fefe73;display:block;font-size:11pt;text-shadow:1px 1px 2px #000;}
+.facilitas_modern .facilitas_settings select {width:180px;}
+.facilitas_modern .facilitas_settings .facilitas_label_subtitle {color:#FFF !important;margin-top:5px;font-size:9pt;}
+.facilitas_modern .facilitas_settings_split {width:110px;float:left;}
+.facilitas_modern .facilitas_settings_splitright {width:70px;float:right;}
+.facilitas_modern .facilitas_settings_split span {color:#FFF;font-weight:bold;margin-right:5px;}
+.facilitas_modern .facilitas_settings_split input {width:60px;margin-right:2px;}
+.facilitas_modern .facilitas_settings_splitright select {width:70px;height:22px;}
+/*** Sidebar > Help ***/
+.facilitas_modern .facilitas_help {position:absolute;left:10px;top:10px;width:200px;border-radius:10px;background:rgba(255,255,255,0.9);z-index:9500;box-shadow:0px 0px 2px #888;display:none;padding:0 0 10px 0;}
+.facilitas_modern .facilitas_help_title {width:201px;height:30px;line-height:33px;font-size:12pt;margin:0;border-top-left-radius: 10px;border-top-right-radius: 10px;background:#232323;display:block;color:#FFF;text-shadow:1px 1px 1px #000;}
+.facilitas_modern .facilitas_help_content ul {list-style:none;margin:5px 0 0 0;padding:0;text-align:left;font-size:11pt;}
+.facilitas_modern .facilitas_help_content li {padding-left:10px;height:16px;line-height:16px;font-size:10pt;}
+.facilitas_modern .facilitas_help_content li:hover {background:#f1f1f1;}
+.facilitas_modern .facilitas_help_content li:first-child {margin-bottom:5px;}
+.facilitas_modern .facilitas_help_content li:first-child:hover {background:none;}
+.facilitas_modern .facilitas_help_content strong {margin-right:10px;font-style:italic;min-width:15px;display:inline-block;}
+.facilitas_modern .facilitas_help_content {;color:#000;}
+.facilitas_modern .facilitas_help_about {border-top:1px solid #d7d7e5;margin-top:10px;padding-top:5px;}
+.facilitas_modern .facilitas_help_about li:first-child {font-weight:bold;}
+.facilitas_modern .facilitas_help_about a, .facilitas_help_about a:visited {color:#596ebd;}
+/*** Speed change ***/
+.facilitas_modern .facilitas_speedwarning {position:absolute;left:50%;margin-left:-10px;bottom:0;width:20px;height:15px;line-height:15px;text-align;center;color:#FFF;z-index:9300;font-size:9px;display:none;}
