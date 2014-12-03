@@ -1,7 +1,7 @@
 {
      "about" : {
-            "title"     :   "Espanhol"
-        ,   "version"   :   "1.0"
+            "title"     :   "Español"
+        ,   "version"   :   "1.1"
         ,   "file"      :   "es"
     }
 
@@ -14,14 +14,16 @@
     , "toolbar" : {
             "play"      :   "Reproducir/Pausar"
         ,   "stop"      :   "Parar"
-        ,   "speeddown" :   "Disminuir Velocidad"
-        ,   "speedup"   :   "Aumentar Velocidad"
-        ,   "rewind"  :   "Volver"
+        ,   "speeddown" :   "Disminuir la Velocidad"
+        ,   "speedup"   :   "Aumentar la Velocidad"
+        ,   "rewind"    :   "Retroceder"
         ,   "forward"   :   "Avanzar"
         ,   "time"      :   "Tiempo"
+        ,   "audiodesc" :   "Audiodescripción"
         ,   "search"    :   "Buscar"
         ,   "caption"   :   "Subtítulo"
-        ,   "settings"  :   "Opciones"
+        ,   "transcript" :   "Transcripción"
+        ,   "settings"  :   "Configuración"
         ,   "volume"    :   "Volumen"
         ,   "help"      :   "Ayuda / Sobre"
         ,   "viewport"  :   "Pantalla completa"
@@ -36,9 +38,12 @@
         ,   "notfound"  :   "No encontrado."
     }
 
+    , "sidebarTranscript" : {
+            "title"     :   "Transcripción"
+    }
 
     , "sidebarSettings" : {
-            "title"     :   "Opciones"
+            "title"     :   "Configuración"
 
         ,   "language" : {
                 "title" :   "Idioma"
@@ -63,7 +68,7 @@
                         ,   "opTransWhite"      :   "Blanco transparente"
                     }  
 
-                ,   "fontFamily"        :   "Família del tipo de letra"
+                ,   "fontFamily"        :   "Familia del tipo de letra"
                 ,   "fontColor"         :   "Color de la letra"
                 ,   "fontSize"          :   "Tamaño"
             }
@@ -74,17 +79,23 @@
         ,   "keyboard"      :   "Atajos del teclado"
         ,   "play"          :   "Reproducir/Pausar"
         ,   "stop"          :   "Parar"
+        ,   "rewind"        :   "Retroceder"
+        ,   "forward"       :   "Avanzar"
         ,   "search"        :   "Buscar"
         ,   "speedup"       :   "Aumentar Velocidad"
-        ,   "speeddown"     :   "Diminuir Velocidad"
-        ,   "caption"       :   "Habilitar/Desabilitar subtítulo"
-        ,   "volume"        :   "Silenciar video"
+        ,   "speeddown"     :   "Disminuir Velocidad"
+        ,   "transcript"    :   "Transcripción"
+        ,   "caption"       :   "Habilitar/Deshabilitar Subtítulos"
+        ,   "volume"        :   "Silenciar video / No silenciar"
         ,   "increaseVol"   :   "Aumentar Volumen"
-        ,   "decreaseVol"   :   "Diminuir Volumen"
-        ,   "viewport"      :   "Pantalla completa"
+        ,   "decreaseVol"   :   "Disminuir Volumen"
+        ,   "adVolume"      :   "AD Mudo / Não Mudo"
+        ,   "adIncreaseVol" :   "Aumentar Volume do AD"
+        ,   "adDecreaseVol" :   "Diminuir Volume do AD"
+        ,   "viewport"      :   "Pantalla Completa"
         ,   "help"          :   "Ayuda / Sobre"
         
-        ,   "developed"      :   "Desarr. por"
+        ,   "developed"      :   "Desar. por"
     }
 
 

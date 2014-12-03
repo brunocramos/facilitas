@@ -1,7 +1,7 @@
 {
      "about" : {
             "title"     :   "English"
-        ,   "version"   :   "1.0"
+        ,   "version"   :   "1.1"
         ,   "file"      :   "en"
     }
 
@@ -15,10 +15,12 @@
         ,   "stop"      :   "Stop"
         ,   "speeddown" :   "Speed Down"
         ,   "speedup"   :   "Speed Up"
-        ,   "rewind"  :   "Backward"
+        ,   "rewind"    :   "Rewind"
         ,   "forward"   :   "Forward"
         ,   "time"      :   "Time"
+        ,   "audiodesc" :   "Audio Description"
         ,   "search"    :   "Search"
+        ,   "transcript" :   "Transcript"
         ,   "caption"   :   "Closed Caption (Subtitle)"
         ,   "settings"  :   "Settings"
         ,   "volume"    :   "Volume"
@@ -33,6 +35,10 @@
         ,   "input"     :   "Search for.."
         ,   "button"    :   "Search"
         ,   "notfound"  :   "No matches found."
+    }
+
+    , "sidebarTranscript" : {
+            "title"     :   "Transcript"
     }
 
 
@@ -73,13 +79,19 @@
         ,   "keyboard"      :   "Keyboard Shortcuts"
         ,   "play"          :   "Play/Pause"
         ,   "stop"          :   "Stop"
+        ,   "rewind"        :   "Backward"
+        ,   "forward"       :   "Forward"
         ,   "search"        :   "Search"
         ,   "speedup"       :   "Speed up"
         ,   "speeddown"     :   "Speed down"
+        ,   "transcript"    :   "Transcript"
         ,   "caption"       :   "Turn On/Off Captions"
         ,   "volume"        :   "Mute/Unmute"
         ,   "increaseVol"   :   "Increase Volume"
         ,   "decreaseVol"   :   "Decrease Volume"
+        ,   "adVolume"      :   "Mute/Unmute AD"
+        ,   "adIncreaseVol" :   "Increase AD Volume"
+        ,   "adDecreaseVol" :   "Decrease AD Volume"
         ,   "viewport"      :   "Fullscreen"
         ,   "help"          :   "Help / About"
         

@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'facilitas';
-	src:url('../font/facilitas.eot?tq1qeg');
-	src:url('../font/facilitas.eot?#iefixtq1qeg') format('embedded-opentype'),
-		url('../font/facilitas.svg?tq1qeg#facilitas') format('svg'),
-		url('../font/facilitas.woff?tq1qeg') format('woff'),
-		url('../font/facilitas.ttf?tq1qeg') format('truetype');
+	src:url('../font/facilitas.eot?kju7sd');
+	src:url('../font/facilitas.eot?#iefixkju7sd') format('embedded-opentype'),
+		url('../font/facilitas.svg?kju7sd#facilitas') format('svg'),
+		url('../font/facilitas.woff?kju7sd') format('woff'),
+		url('../font/facilitas.ttf?kju7sd') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,6 +23,12 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.fac-i-transcript:before {
+	content: "\e613";
+}
+.fac-i-audio-desc-mute:before {
+	content: "\e612";
+}
 .fac-i-fullscreen-close:before {
 	content: "\e605";
 }

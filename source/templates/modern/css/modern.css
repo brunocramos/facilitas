@@ -2,35 +2,48 @@
 @import url(icon.css);
 
 /**************** General Config ****************/
+.fac-sr-only {border: 0;clip: rect(0 0 0 0);height: 1px;margin: -1px;padding: 0;position: absolute;width: 1px;}
+
 .facilitas_player {min-width:652px;height:426px;position:relative;z-index:9000;text-align:center;background:#232323;font-size:14px;}
 .facilitas_player a {transition:none}
 .facilitas_player ul, .facilitas_player ol {margin:0;padding:0;list-style:none;}
 .facilitas_player ol {list-style:decimal;}
-.facilitas_player:-webkit-full-screen {position:fixed;left:0;bottom:1px;width: 100% !important;height: auto !important;}
+.facilitas_player:-webkit-full-screen {position:fixed;left:0;top:0;bottom:1px;width: 100% !important;height: 100% !important;}
+.facilitas_player:-moz-full-screen {position:fixed;left:0;top:0;bottom:1px;width: 100% !important;height: 100% !important;}
 .facilitas_video {width:auto;height:auto;position:relative;top:0;left:0;z-index:9000;margin:0 auto;padding:0;cursor:pointer;}
-.facilitas_player > .facilitas_toolbar {position:absolute;z-index:9500;left:0;width:100%;height:58px;}
+.facilitas_player > .facilitas_toolbar {position:absolute;z-index:9500;left:0;width:100%;height:55px;}
 .facilitas_fr {float:right !important;}
 .facilitas_loading {display:none;width:100%;height:100%;position:absolute;z-index:9100;left:0;top:0;background:rgba(0,0,0,.85)}
 .facilitas_loading_img {width:64px;height:64px;position:relative;z-index:9500;left:50%;top:50%;margin-left:-32px;margin-top:-70px;background:url(../img/loading.gif) rgba(0,0,0,.7) no-repeat center center;padding:10px;border-radius:20px;}
 
-.facilitas_modern .facilitas_player_video {background:#232323;position:relative;z-index:99;}
+.facilitas_modern .facilitas_player_video {background:#232323;position:relative;z-index:9099;}
 .facilitas_player.lightson {z-index:30001;}
 /**************** Template Config ****************/
 /*** Toolbar ***/
 .facilitas_morden .disabled {opacity:.4;}
 .facilitas_modern {border:1px solid #232323;background:#232323;font-family:'Droid Sans', sans-serif;}
 .facilitas_modern > .facilitas_toolbar {background:#232323;border-top:1px solid #3d3d3d;}
-.facilitas_modern .facilitas_controls {display:inline-block;text-align:left;width:auto;float:left;height:40px;padding:0 3px;margin-top:2px;}
+.facilitas_modern .facilitas_controls {display:inline-block;text-align:left;width:auto;float:left;height:50px;padding:0 3px;margin-top:2px;}
 .facilitas_modern .facilitas_controls.fr {float:right !important;}
-.facilitas_modern .facilitas_controls > li {display:inline-block;float:left;height:50px;width:50px;border-left:1px solid #201f3f;text-align:center;position:relative;}
-.facilitas_modern .facilitas_controls > li > a{display:block;height:40px;width:40px;margin-top:5px;line-height:45px;text-decoration: none;color:#ffffff;font-size:14pt;border:2px solid #484848;border-radius:5px;transition:all 0.2s ease-in-out;}
-.facilitas_modern .facilitas_controls > li > a:hover,
-	.facilitas_modern .facilitas_controls > li > a.active {background:#575757;border-color:#575757;}
-.facilitas_modern .facilitas_controls > li > a:focus{border-color: #FF0;}
-.facilitas_modern .facilitas_time{width:auto !important;height:40px !important;line-height:42px;padding:0 6px;color:#FFF;letter-spacing:1px;font-size:10pt;border:2px solid #484848 !important;border-radius:5px;margin:5px 0;background:#484848;}
+.facilitas_modern .facilitas_controls > li {display:inline-block;float:left;height:45px;width:50px;border-left:1px solid #201f3f;text-align:center;position:relative;}
+.facilitas_modern .facilitas_controls > li:last-child {width:36px;}
+.facilitas_modern .facilitas_controls > li:first-child {margin-left:2px;}
+.facilitas_modern .facilitas_controls > li button,
+	.facilitas_modern .facilitas_controls > li > a{display:block;height:40px;width:40px;margin-top:5px;line-height:42px;text-decoration: none;color:#ffffff;font-size:14pt;border:2px solid #484848;border-radius:5px;transition:all 0.2s ease-in-out;background:none;padding:0;}
+.facilitas_modern .facilitas_controls > li button:hover,
+	.facilitas_modern .facilitas_controls > li button:focus
+	.facilitas_modern .facilitas_controls > li button.active,
+	.facilitas_modern .facilitas_controls > li a:hover,
+	.facilitas_modern .facilitas_controls > li a:focus
+	.facilitas_modern .facilitas_controls > li a.active {background:#575757;border-color:#575757;}
+
+.facilitas_modern .facilitas_controls > li > button:focus {border-color:#FF0;outline:#FF0}
+
+.facilitas_modern .facilitas_controls > li > a:button{border-color: #FF0;}
+.facilitas_modern .facilitas_time{width:auto !important;height:36px !important;line-height:38px;padding:0 6px;color:#FFF;letter-spacing:1px;font-size:10pt;border:2px solid #484848 !important;border-radius:5px;margin:5px 0;background:#484848;}
 
 
-.facilitas_modern .facilitas_btn_light {display:none;height:46px;width:46px;line-height:48px;font-size:18pt;text-align:center;position:absolute;top:20px;right:20px;z-index:9500;background:#484848;border-radius:10px;color:#fff;text-decoration: none;}
+.facilitas_modern .facilitas_btn_light {display:none;height:46px;width:46px;line-height:48px;font-size:18pt;text-align:center;position:absolute;top:20px;right:20px;z-index:9500;background:#484848;border-radius:10px;color:#fff;text-decoration: none;border:none;}
 .facilitas_modern .facilitas_btn_light:hover,
 	.facilitas_modern .facilitas_btn_light:focus {color:#ffff00;}
 
@@ -63,35 +76,60 @@
 .facilitas_modern .facilitas_buffbar .ui-slider-range-min { left: 0; }
 .facilitas_modern .facilitas_buffbar .ui-slider-range-max { right: 0; }
 .facilitas_modern .facilitas_buffbar .ui-slider-range { left: 0; width: 100%; }
-.facilitas_modern .facilitas_buffbar .ui-slider-range-facilitas_vol_container min { bottom: 0; }
+.facilitas_modern .facilitas_buffbar .ui-slider-range-facilitas_vol_container .min { bottom: 0; }
 .facilitas_modern .facilitas_buffbar .ui-slider-range-max { top: 0; }
 /*** captions ***/
 .facilitas_modern .facilitas_btn_cc {opacity:1;background:#575757;}
-.facilitas_modern .facilitas_btn_cc_disabled{opacity:.4;background:none;}
+.facilitas_modern .disabled{opacity:.2;background:none;}
 
 /*** volume Bar ***/
-.facilitas_modern .facilitas_btn_volume{overflow:visible !important;position:relative;z-index:9500}
-.facilitas_modern .facilitas_btn_container,.facilitas_ccbtn_container{position:absolute;width:40px;height:40px;top:0;left:0;}
+.facilitas_modern .facilitas_btn_volume,
+	.facilitas_modern .facilitas_btn_advolume{overflow:visible !important;position:relative;z-index:9500}
+.facilitas_modern .facilitas_btn_container,
+	.facilitas_ccbtn_container{position:absolute;width:40px;height:40px;top:0;left:0;}
+
 .facilitas_modern .facilitas_nosound{background-position:0 -288px !important;}.facilitas_modern .facilitas_nosound:hover{background-position:-52px -288px !important;}
-.facilitas_modern .facilitas_vol_container{display:none;width:52px;height:100px;position:absolute;left:50%;margin-left:-26px;top:-104px;}
-.facilitas_modern .facilitas_vol_wrapper {position:absolute;left:50%;margin-left:-20px;width:40px;height:100px;position:relative;border:1px solid #575757;background:#575757;box-shadow:0 1px 2px -1px #111;border-radius:5px;}
+.facilitas_modern .facilitas_vol_container,
+	.facilitas_modern .facilitas_advol_container{display:none;width:52px;height:100px;position:absolute;left:50%;margin-left:-27px;top:-104px;}
 
+.facilitas_btn_audiodesc,
+	.facilitas_btn_volume {width:36px !important;height:36px !important;}
 
-.facilitas_modern .facilitas_control_volume_slider{width:8px;height:90px;position:absolute;left:50%;margin-left:-13px;margin-top:5px;z-index:9500;}
-.facilitas_modern .facilitas_control_volume_slider.ui-widget-content {background:#373737;margin-left:-4px;width:6px}
-.facilitas_modern .facilitas_control_volume_slider .ui-slider-range {width:6px;background:#fff;z-index:9250;border-radius:3px;}
-.facilitas_modern .facilitas_control_volume_slider .ui-slider-handle {display:block;width:22px;height:8px;border:1px solid #575757;background:#fff;margin-left:-2px;margin-bottom:-5px;border:none;z-index:9300;cursor:pointer;}
-.facilitas_modern .facilitas_control_volume_slider .ui-slider-range-min { bottom: 0; }
-.facilitas_modern .facilitas_control_volume_slider .ui-slider-range-max { top: 0; }
+.facilitas_modern .facilitas_advol_container {margin-left:-32px;top:-97px;}
+
+.facilitas_modern .facilitas_vol_wrapper,
+	.facilitas_modern .facilitas_advol_wrapper {position:absolute;left:50%;margin-left:-20px;width:40px;height:100px;position:relative;border:1px solid #575757;background:#575757;box-shadow:0 1px 2px -1px #111;border-radius:5px;}
+
+.facilitas_modern .facilitas_btn_volume:focus .facilitas_vol_container,
+	.facilitas_modern .facilitas_btn_advolume:focus .facilitas_advol_container {display:block !important;}
+
+.facilitas_modern .facilitas_control_volume_slider,
+	.facilitas_modern .facilitas_control_advolume_slider{width:8px;height:90px;position:absolute;left:50%;margin-left:-13px;margin-top:5px;z-index:9500;}
+.facilitas_modern .facilitas_control_volume_slider.ui-widget-content,
+	.facilitas_modern .facilitas_control_advolume_slider.ui-widget-content {background:#373737;margin-left:-4px;width:6px}
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-range,
+	.facilitas_modern .facilitas_control_advolume_slider .ui-slider-range {width:6px;background:#fff;z-index:9250;border-radius:3px;}
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-handle,
+	.facilitas_modern .facilitas_control_advolume_slider .ui-slider-handle {display:block;width:22px;height:8px;border:1px solid #575757;background:#fff;margin-left:-2px;margin-bottom:-5px;border:none;z-index:9300;cursor:pointer;}
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-range-min,
+	.facilitas_modern .facilitas_control_advolume_slider .ui-slider-range-min { bottom: 0; }
+.facilitas_modern .facilitas_control_volume_slider .ui-slider-range-max,
+	.facilitas_modern .facilitas_control_avdolume_slider .ui-slider-range-max { top: 0; }
+
 .facilitas_modern .ui-widget-content {background:none;border:none;}
 .facilitas_modern .facilitas_percent {font-size:11px;margin-right:5px;}
 .facilitas_modern .facilitas_seek {display:block;width:22px;height:22px;background:#FFF;border-radius:2px;position:absolute;right:-10px;top:-3px;}
 /*** Tag list ***/
-.facilitas_modern .facilitas_tags {margin-top:59px;text-align: left;background: #232323;line-height:22px;position:relative;z-index:100;}
-.facilitas_modern .facilitas_tags_goto {margin:0;padding:5px 0 0 0;font-size:8pt;color:#FFF;z-index:9300;border-top:1px solid #3d3d3d;text-align:left;text-indent:6px;text-transform: uppercase;}
-.facilitas_modern .facilitas_tags ul {display:inline-block;position:relative;min-height:30px;width:100%;list-style:none;text-align:left;z-index:9300;background:#232323;border:1px solid #232323;margin-left:-1px;padding-bottom: 2px;}
+.facilitas_modern .facilitas_tags {margin:56px -1px 0 -1px;text-align: left;background: #232323;line-height:16px;position:relative;z-index:9090;}
+.facilitas_modern .facilitas_tags_goto {margin:0;padding:6px 0 0 0;font-size:8pt;color:#FFF;z-index:9300;border-top:1px solid #3d3d3d;text-align:left;text-indent:6px;text-transform: uppercase;line-height: 1em;}
+.facilitas_modern .facilitas_tags ul {
+	display:inline-block;position:relative;width:100%;list-style:none;text-align:left;z-index:9300;background:#232323;border:1px solid #232323;margin-left:0px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 .facilitas_modern .facilitas_tags ul > li {float:left;line-height:20px;padding:2px;font-size:10pt}
-.facilitas_modern .facilitas_tags a {color:#f1f1f1;text-decoration:none;display:block;padding:8px 10px;height:20px;border-radius:5px;transition: all 0.2s ease-in;border:2px solid #575757;}
+.facilitas_modern .facilitas_tags a {color:#f1f1f1;text-decoration:none;display:block;padding:2px 8px;height:20px;border-radius:5px;transition: all 0.2s ease-in;border:2px solid #575757;}
 .facilitas_modern .facilitas_tags a:hover,
  .facilitas_modern .facilitas_tags a:focus,
  .facilitas_tags .facilitas_selected {background:#575757;color:#fff;}
@@ -106,18 +144,20 @@
 /*** Closed Caption ***/
 .facilitas_modern .facilitas_closedcaption {position:absolute;z-index:9499;width:90%;margin:0 5% 0 5%;color:#FF0;top:5px;line-height:18px;font-family:"Trebuchet MS", Arial, sans-serif;font-weight:bold;text-shadow:2px 2px 2px #000;font-size:14pt;}
 /*** Sidebar ***/
-.facilitas_modern .facilitas_sidebar {position:absolute;right:0;display:block;top:-1px;width:190px;padding-bottom:5px;background:#232323;border:1px solid #232323;} 
+.facilitas_modern .facilitas_sidebar {position:absolute;right:0;display:block;top:-1px;width:190px;padding-bottom:5px;background:#232323;border:1px solid #232323;z-index:9000;} 
 .facilitas_modern .facilitas_sidebar header > .facilitas_sidebar_title {width:180px;height:30px;background:#1b1b1b;box-shadow:0 1px 1px -1px #08081a;font-family: 'Droid Sans', Arial, Tahoma, sans-serif;color:#FFF;font-weight:bold;line-height:30px;text-align:left;padding:0 2px 0 5px;text-shadow:1px 1px 1px #000;font-size:12pt;}
-.facilitas_modern .facilitas_sidebar_close {float:right;display:block;height:20px;width:20px;line-height:22px;font-size:9pt;text-align:center;border:1px solid #575757;border-radius:5px;margin-top:4px;}
+.facilitas_modern .facilitas_sidebar_close {float:right;display:block;height:20px;width:20px;line-height:22px;font-size:9pt;text-align:center;border:1px solid #575757;border-radius:5px;margin-top:4px;background:none;color:#fff;padding:0;}
 .facilitas_modern .facilitas_sidebar_close:hover {background:#575757;}
 
 .facilitas_modern .facilitas_sidebar a {color:#fff;text-decoration:none;}
 .facilitas_modern .facilitas_sidebar_cont {list-style:none;margin:0;padding:0;}
 .facilitas_modern .facilitas_sidebar_cont li {width:180px;height:auto;display:inline-block;box-shadow:0 1px 1px -1px #444;margin-bottom:1px;background:#282828;padding:10px 5px}
 /*** Sidebar > Caption search ***/
-.facilitas_modern .facilitas_sidebar_search {box-shadow:0 1px 1px -1px #08081a;background:#222;padding:3px 5px 3px 5px;text-align:left;display:inlne-block;}
-.facilitas_modern .facilitas_sidebar input {background:#fff;border-radius:6px;border:1px solid #111;width:135px;height:16px;padding:5px;margin:0;font-family:'Droid Sans', Arial, sans-serif;}
-.facilitas_modern .facilitas_btn_inputsearch {float:right;display:block;height:24px;width:24px;line-height:25px;border:2px solid #484848;text-align:center;border-radius:5px;font-size:9pt;}
+.facilitas_modern .facilitas_sidebar_search {box-shadow:0 1px 1px -1px #08081a;background:#222;padding:3px 5px 3px 5px;text-align:left;display:inline-block;}
+.facilitas_modern .facilitas_sidebar input {background:#fff;border-radius:6px;border:1px solid #111;width:135px;height:26px;padding:5px;margin:0;font-family:'Droid Sans', Arial, sans-serif;font-size:10pt;}
+.facilitas_modern .facilitas_btn_inputsearch {float:right;display:block;height:38px;width:30px;line-height:25px;border:2px solid #484848;text-align:center;border-radius:5px;font-size:9pt;padding:0;background:none;color:#fff;margin-left:2px;}
+.facilitas_modern .facilitas_btn_inputsearch:hover,
+	.facilitas_modern .facilitas_btn_inputsearch:focus {background:#484848;}
 .facilitas_modern .facilitas_search_result {margin:0;padding:0;width:190px;height:200px;color:#fefe73 !important;line-height:18px;font-size:10pt;text-align:justify;list-style-position:inside;overflow-y:auto;}
 .facilitas_modern .facilitas_search_result li{padding:8px 5px 8px 5px;border-top:1px solid #0a0915;border-bottom:1px solid #222243;}
 .facilitas_modern .facilitas_search_result li:hover{background:#252344}
@@ -132,8 +172,20 @@
 .facilitas_modern .facilitas_settings_split {width:110px;float:left;}
 .facilitas_modern .facilitas_settings_splitright {width:70px;float:right;}
 .facilitas_modern .facilitas_settings_split span {color:#FFF;font-weight:bold;margin-right:5px;}
-.facilitas_modern .facilitas_settings_split input {width:60px;margin-right:2px;}
+.facilitas_modern .facilitas_settings_split input {width:70px;margin-right:2px;}
 .facilitas_modern .facilitas_settings_splitright select {width:70px;height:22px;}
+
+.facilitas_modern .facilitas_settings select,
+	.facilitas_modern .facilitas_settings input {
+		border:3px solid transparent;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+.facilitas_modern .facilitas_settings select:focus,
+	.facilitas_modern .facilitas_settings input:focus {
+	border:3px solid #3391e1;
+}
 /*** Sidebar > Help ***/
 .facilitas_modern .facilitas_help {position:absolute;left:10px;top:10px;width:200px;border-radius:10px;background:rgba(255,255,255,0.9);z-index:9500;box-shadow:0px 0px 2px #888;display:none;padding:0 0 10px 0;}
 .facilitas_modern .facilitas_help_title {width:201px;height:30px;line-height:33px;font-size:12pt;margin:0;border-top-left-radius: 10px;border-top-right-radius: 10px;background:#232323;display:block;color:#FFF;text-shadow:1px 1px 1px #000;}
@@ -147,5 +199,42 @@
 .facilitas_modern .facilitas_help_about {border-top:1px solid #d7d7e5;margin-top:10px;padding-top:5px;}
 .facilitas_modern .facilitas_help_about li:first-child {font-weight:bold;}
 .facilitas_modern .facilitas_help_about a, .facilitas_help_about a:visited {color:#596ebd;}
+/*** Sidebar > Transcript ***/
+.facilitas_modern .facilitas_transcript {
+	position:absolute;left:0;display:block;top:-1px;width:190px;height:400px;overflow:auto;
+	padding-bottom:5px;background:#fff;border:1px solid #232323;z-index:9000;
+}
+
+.facilitas_modern #startWlAuto {position:absolute !important;left:auto !important;right:40px;}
+.facilitas_modern .facilitas_transcript img.no-wlauto {position:absolute !important;left:auto !important;right:0;top:30px !important;}
+
+.facilitas_modern .facilitas_transcript header {
+	height:31px;border-bottom:1px solid #232323;line-height:30px;text-align:left;
+	padding:0 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background:#232323;color:#fff;font-weight: bold;margin-bottom:5px;
+}
+.facilitas_modern .facilitas_transcript ol {text-align:left;padding:0 15px 0 27px;}
+.facilitas_modern .facilitas_transcript ol li {margin:10px 0;}
+.facilitas_modern .facilitas_transcript ol li.highlight {background:#eee;}
+
+.facilitas_modern .facilitas_transcript .facilitas_sidebar_close {margin-right:-4px;}
 /*** Speed change ***/
 .facilitas_modern .facilitas_speedwarning {position:absolute;left:50%;margin-left:-10px;bottom:0;width:20px;height:15px;line-height:15px;text-align;center;color:#FFF;z-index:9300;font-size:9px;display:none;}
+
+/*** Audio Description ***/
+.facilitas_audiodesc {position:absolute;bottom:-30px;height:30px !important;width:100%;display:block;}
+
+/*** Fullscreen ***/
+.facilitas_player:-webkit-full-screen .facilitas_player_video,
+	.facilitas_player:-webkit-full-screen video {width:100%;height:100% !important;background:#000;}
+
+.facilitas_player:-moz-full-screen .facilitas_player_video,
+	.facilitas_player:-moz-full-screen video {width:100%;height:100% !important;background:#000;}
+
+.facilitas_player:-webkit-full-screen .facilitas_toolbar {position:fixed !important;bottom:0 !important;}
+.facilitas_player:-webkit-full-screen .facilitas_progress {position:fixed !important;bottom:55px !important;}
+.facilitas_player:-webkit-full-screen .facilitas_btn_light {display:none !important;}
+.facilitas_player:-webkit-full-screen .facilitas_subtitle {bottom:75px !important;}

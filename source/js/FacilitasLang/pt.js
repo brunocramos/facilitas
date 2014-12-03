@@ -1,7 +1,7 @@
 {
      "about" : {
             "title"     :   "Português"
-        ,   "version"   :   "1.0"
+        ,   "version"   :   "1.1"
         ,   "file"      :   "pt"
     }
 
@@ -16,11 +16,13 @@
         ,   "stop"      :   "Parar"
         ,   "speeddown" :   "Diminuir Velocidade"
         ,   "speedup"   :   "Aumentar Velocidade"
-        ,   "rewind"  :   "Retroceder"
+        ,   "rewind"    :   "Retroceder"
         ,   "forward"   :   "Avançar"
         ,   "time"      :   "Tempo"
+        ,   "audiodesc" :   "Audiodescrição"
         ,   "search"    :   "Procurar"
         ,   "caption"   :   "Legenda"
+        ,   "transcript" :   "Transcrição"
         ,   "settings"  :   "Opções"
         ,   "volume"    :   "Volume"
         ,   "help"      :   "Ajuda / Sobre"
@@ -36,6 +38,9 @@
         ,   "notfound"  :   "Não encontrado."
     }
 
+    , "sidebarTranscript" : {
+            "title"     :   "Transcrição"
+    }
 
     , "sidebarSettings" : {
             "title"     :   "Opções"
@@ -74,13 +79,19 @@
         ,   "keyboard"      :   "Atalhos de teclado"
         ,   "play"          :   "Reproduzir/Pausar"
         ,   "stop"          :   "Parar"
+        ,   "rewind"        :   "Retroceder"
+        ,   "forward"       :   "Avançar"
         ,   "search"        :   "Procurar"
         ,   "speedup"       :   "Aumentar Velocidade"
         ,   "speeddown"     :   "Diminuir Velocidade"
+        ,   "transcript"    :   "Transcrição"
         ,   "caption"       :   "Ligar/Desligar Legendas"
         ,   "volume"        :   "Mudo / Não Mudo"
         ,   "increaseVol"   :   "Aumentar Volume"
         ,   "decreaseVol"   :   "Diminuir Volume"
+        ,   "adVolume"      :   "AD Mudo / Não Mudo"
+        ,   "adIncreaseVol" :   "Aumentar Volume do AD"
+        ,   "adDecreaseVol" :   "Diminuir Volume do AD"
         ,   "viewport"      :   "Tela Cheia"
         ,   "help"          :   "Ajuda / Sobre"
         

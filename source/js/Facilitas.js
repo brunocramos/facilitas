@@ -1,6 +1,6 @@
 /**
 * Facilitas Player
-* @version  1.0
+* @version  1.1
 * @url http://facilitasplayer.com 
 * @author Bruno C. Ramos <bruno@weeag>
 * @description Video player focused in providing a better accessibility
@@ -63,12 +63,15 @@
             ,   videoSpeed      : 1.0
             ,   fonts           : new Array("Trebuchet MS","Arial","Times New Roman","Verdana","Helvetica","Courier New")
             ,   initVolume      : 0.5
+            ,   initAdVolume    : 0.8
             ,   baseLangFolder      : "js/"
             ,   language        : "en"
-            ,   availableLanguages   : ["en","pt"]
+            ,   availableLanguages   : ["pt", "en", "es"]
             ,   enableKeyboard  : true
+            ,   fullscreenToolbarSpeed : 2000
             ,   subtitleSrc     : null
-            ,   audiodesciption : null
+            ,   audiodescription : null
+            ,   transcripts      : null
 
 
 
@@ -82,13 +85,21 @@
             ,   bufferSliding       : false
             ,   currentBuffer       : 0
             ,   volumeSliding       : false
-            ,   isFullScreen        : false
+            ,   isFullscreen        : false
             ,   isLightOn           : false
             ,   oldVol              : null
+            ,   oldAdVol            : null
             ,   hasTags             : false
             ,   debug               : true
             ,   subtitleCount       : 0
             ,   subtitleTotal       : 0
+            ,   currentSubtitleLine : -1
+            ,   newSubtitleLine     : null
+            ,   fullscreenToolbarHidden : false
+            ,   fullscreenToolbarHover : false
+            ,   mouseX              : 0
+            ,   mouseY              : 0
+            ,   fullscreenTimer     : null
 
             // Support
             ,   browserPrefix           : null
@@ -98,6 +109,7 @@
             ,   loading                 : true
             ,   sidebar_captionsearch   : false
             ,   sidebar_settings        : false
+            ,   sidebar_transcript      : false
             ,   helpIsOpen              : false
             ,   caption_list_height     : 0
             ,   lang                    : {}
@@ -112,6 +124,7 @@
             ,   facilitas_speedup           : null
             ,   facilitas_speeddown         : null
             ,   facilitas_speedwarning      : null
+            ,   facilitas_audiodesc_btn     : null
             ,   facilitas_search_btn        : null
             ,   facilitas_settings_btn      : null
             ,   facilitas_help              : null
@@ -145,6 +158,13 @@
             ,   facilitas_fontcolor         : null
             ,   facilitas_fontsize          : null
             ,   videoObject                 : null
+            ,   facilitas_audiodesc         : null
+            ,   facilitas_advolume          : null
+            ,   facilitas_advolume_btn      : null
+            ,   facilitas_advolume_status   : null
+            ,   facilitas_advolume_slider     : null
+            ,   facilitas_transcript_btn    : null
+            ,   facilitas_transcript        : null
             
             // Features
             ,   subtitle: null
@@ -192,6 +212,15 @@
                 } else {
                     tagList = "";            
                 }
+
+                // Get audio description
+                if(typeof(el.attr('data-audiodescription')) !== 'undefined')
+                    op.audiodescription = el.attr('data-audiodescription');
+                
+               // Get transcription
+                if(typeof(el.attr('data-transcripts')) !== 'undefined')
+                    op.transcripts = el.attr('data-transcripts');
+                
                 
                 // Remove old tagList
                 $(".facilitas_tags",el).remove();
@@ -206,19 +235,20 @@
                     +'</div>'
                     +'<div class="facilitas_toolbar">'
                     +'  <ul class="facilitas_controls" title="Toolbar">'
-                    +'      <li><a href="#" class="facilitas_btn_play" title="'+op.lang[op.language].toolbar.play+'"><i class="fac-i-play"></i></a></li>'
-                    +'      <li><a href="#" class="facilitas_btn_stop" title="'+op.lang[op.language].toolbar.stop+'"><i class="fac-i-stop"></i></a></a></li>'
-                    +'      <li><a href="#" class="facilitas_btn_speeddown" title="'+op.lang[op.language].toolbar.rewind+'"><i class="fac-i-rewind"></i></a></a></li>'
-                    +'      <li><a href="#" class="facilitas_btn_speedup" title="'+op.lang[op.language].toolbar.forward+'"><i class="fac-i-forward"></i></a></a>'
-                    +'      <li title="'+op.lang[op.language].toolbar.time+'" class="facilitas_time"><div class="facilitas_timeupdate">00:00 / 00:00</div><div class="facilitas_speedwarning">2x</div></li></li>'
+                    +'      <li><button class="facilitas_btn_play" title="'+op.lang[op.language].toolbar.play+'"><span class="fac-i-play"></span></button></li>'
+                    +'      <li><button class="facilitas_btn_stop" title="'+op.lang[op.language].toolbar.stop+'"><span class="fac-i-stop"></span></button></li>'
+                    +'      <li><button class="facilitas_btn_speeddown" title="'+op.lang[op.language].toolbar.rewind+'"><span class="fac-i-rewind"></span></button></li>'
+                    +'      <li><button class="facilitas_btn_speedup" title="'+op.lang[op.language].toolbar.forward+'"><span class="fac-i-forward"></span></button></li>'
+                    +'      <li title="'+op.lang[op.language].toolbar.time+'" class="facilitas_time"><div class="facilitas_timeupdate">00:00 / 00:00</div><div class="facilitas_speedwarning">2x</div></li>'
                     +'  </ul>'
                     +'  <ul class="facilitas_controls fr" title="Toolbar">'
-                    +'      <li><a href="#" class="facilitas_btn_search" title="'+op.lang[op.language].toolbar.search+'"><i class="fac-i-search"></i></a></a></li>'
-                    +'      <li><a href="#" class="facilitas_btn_cc" title="'+op.lang[op.language].toolbar.caption+'"><i class="fac-i-closedcaption"></i></a></a></li>'
-                    +'      <li><a href="#" class="facilitas_btn_settings" title="'+op.lang[op.language].toolbar.settings+'"><i class="fac-i-settings"></i></a></a></li>'
+                    +'      <li><button class="facilitas_btn_search" title="'+op.lang[op.language].toolbar.search+'"><span class="fac-i-search"></span></button></li>'
+                    +'      <li><button class="facilitas_btn_cc" title="'+op.lang[op.language].toolbar.caption+'"><span class="fac-i-closedcaption"></span></button></li>'
+                    +'      <li><button class="facilitas_transcript_btn" title="'+op.lang[op.language].toolbar.transcript+'"><span class="fac-i-transcript"></span></button></li>'
+                    +'      <li><button class="facilitas_btn_settings" title="'+op.lang[op.language].toolbar.settings+'"><span class="fac-i-settings"></span></button></li>'
                     +'      <li>'
-                    +'          <a href="#" class="facilitas_btn_volume" title="'+op.lang[op.language].toolbar.volume+'">'
-                    +'              <i class="vol_status fac-i-sound-half"></i>'
+                    +'          <a href="javascript:void();" class="facilitas_btn_volume" title="'+op.lang[op.language].toolbar.volume+'">'
+                    +'              <span class="vol_status fac-i-sound-half"></span>'
                     +'              <div class="facilitas_btn_container"></div>'
                     +'              <div class="facilitas_vol_container">'
                     +'                  <div class="facilitas_vol_wrapper">'
@@ -227,11 +257,11 @@
                     +'              </div>'
                     +'          </a>'
                     +'      </li>'
-                    +'      <li><a href="#" class="facilitas_btn_help" title="'+op.lang[op.language].toolbar.help+'"><i class="fac-i-help"></i></a></a></li>'
-                    +'      <li><a href="#" class="facilitas_btn_viewport" title="'+op.lang[op.language].toolbar.viewport+'"><i class="fac-i-fullscreen-open"></i></a></a></li>'
+                    +'      <li><button class="facilitas_btn_help" title="'+op.lang[op.language].toolbar.help+'"><span class="fac-i-help"></span></button></li>'
+                    +'      <li><button class="facilitas_btn_viewport" title="'+op.lang[op.language].toolbar.viewport+'"><span class="fac-i-fullscreen-open"></span></button></li>'
                     +'  </ul>'
                     +'</div>'
-                    +'<div class="facilitas_subtitle"></div>'
+                    +'<div class="facilitas_subtitle" aria-live="assertive"></div>'
                     +'<div class="facilitas_closedcaption"></div>'
                     + tagList
                     +'<div class="facilitas_help">'
@@ -242,15 +272,19 @@
                     +'          <li title="P - '+op.lang[op.language].help.play+'"><strong>P</strong>'+op.lang[op.language].help.play+'</li>'
                     +'          <li title="Q - '+op.lang[op.language].help.stop+'"><strong>Q</strong>'+op.lang[op.language].help.stop+'</li>'
                     +'          <li title="S - '+op.lang[op.language].help.search+'"><strong>S</strong>'+op.lang[op.language].help.search+'</li>'
-                    +'          <li title="E - '+op.lang[op.language].help.speeddown+'"><strong>O</strong>'+op.lang[op.language].help.speeddown+'</li>'
-                    +'          <li title="O - '+op.lang[op.language].help.speedup+'"><strong>E</strong>'+op.lang[op.language].help.speedup+'</li>'
-                    +'          <li title="[ - '+op.lang[op.language].help.rewind+'"><strong>O</strong>'+op.lang[op.language].help.rewind+'</li>'
-                    +'          <li title="] - '+op.lang[op.language].help.forward+'"><strong>O</strong>'+op.lang[op.language].help.forward+'</li>'
+                    +'          <li title="E - '+op.lang[op.language].help.speeddown+'"><strong>E</strong>'+op.lang[op.language].help.speeddown+'</li>'
+                    +'          <li title="R - '+op.lang[op.language].help.speedup+'"><strong>R</strong>'+op.lang[op.language].help.speedup+'</li>'
+                    +'          <li title="Y - '+op.lang[op.language].help.rewind+'"><strong>Y</strong>'+op.lang[op.language].help.rewind+'</li>'
+                    +'          <li title="U - '+op.lang[op.language].help.forward+'"><strong>U</strong>'+op.lang[op.language].help.forward+'</li>'
+                    +'          <li title="T - '+op.lang[op.language].help.transcript+'"><strong>T</strong>'+op.lang[op.language].help.transcript+'</li>'
                     +'          <li title="C - '+op.lang[op.language].help.caption+'"><strong>C</strong>'+op.lang[op.language].help.caption+'</li>'
-                    +'          <li title="A - '+op.lang[op.language].help.volume+'"><strong>A</strong>'+op.lang[op.language].help.volume+'</li>'
-                    +'          <li title="D - '+op.lang[op.language].help.decreaseVol+'"><strong>D</strong>'+op.lang[op.language].help.decreaseVol+'</li>'
-                    +'          <li title="U - '+op.lang[op.language].help.increaseVol+'"><strong>U</strong>'+op.lang[op.language].help.increaseVol+'</li>'
-                    +'          <li title="L - '+op.lang[op.language].help.viewport+'"><strong>L</strong>'+op.lang[op.language].help.viewport+'</li>'
+                    +'          <li title="M - '+op.lang[op.language].help.volume+'"><strong>M</strong>'+op.lang[op.language].help.volume+'</li>'
+                    +'          <li title="V - '+op.lang[op.language].help.decreaseVol+'"><strong>V</strong>'+op.lang[op.language].help.decreaseVol+'</li>'
+                    +'          <li title="B - '+op.lang[op.language].help.increaseVol+'"><strong>B</strong>'+op.lang[op.language].help.increaseVol+'</li>'
+                    +'          <li title="A - '+op.lang[op.language].help.adVolume+'"><strong>A</strong>'+op.lang[op.language].help.adVolume+'</li>'
+                    +'          <li title="Z - '+op.lang[op.language].help.adDecreaseVol+'"><strong>Z</strong>'+op.lang[op.language].help.adDecreaseVol+'</li>'
+                    +'          <li title="X - '+op.lang[op.language].help.adIncreaseVol+'"><strong>X</strong>'+op.lang[op.language].help.adIncreaseVol+'</li>'
+                    +'          <li title="F - '+op.lang[op.language].help.viewport+'"><strong>F</strong>'+op.lang[op.language].help.viewport+'</li>'
                     +'          <li title="H - '+op.lang[op.language].help.help+'"><strong>H</strong>'+op.lang[op.language].help.help+'</li>'
                     +'      </ul>'
                     +'  </div>'
@@ -261,16 +295,16 @@
                     +'      </ul>'
                     +'  </div>'
                     +'</div>'
-                    +'<section class="facilitas_sidebar facilitas_caption_search">'
+                    +'<div class="facilitas_sidebar facilitas_caption_search">'
                     +'  <header>'
-                    +'      <div class="facilitas_sidebar_title" title="'+op.lang[op.language].sidebarSearch.title+'"><span>'+op.lang[op.language].sidebarSearch.title+'</span> <a href="#" class="facilitas_sidebar_close" title="'+op.lang[op.language].buttons.close+'"><i class="fac-i-close"></i></a></div>'
-                    +'      <div class="facilitas_sidebar_search"><form class="facilitas_fsearch"><input type="text" class="facilitas_search_input" placeholder="'+op.lang[op.language].sidebarSearch.input+'" title="'+op.lang[op.language].sidebarSearch.input+'" /> <a href="#" class="facilitas_btn_inputsearch" title="'+op.lang[op.language].sidebarSearch.button+'"><i class="fac-i-search"></i></a></form></div>'
+                    +'      <div class="facilitas_sidebar_title" title="'+op.lang[op.language].sidebarSearch.title+'"><span class="title">'+op.lang[op.language].sidebarSearch.title+'</span> <button data-type="search" class="facilitas_sidebar_close" title="'+op.lang[op.language].buttons.close+'"><span class="fac-i-close"></span></button></div>'
+                    +'      <div class="facilitas_sidebar_search"><form class="facilitas_fsearch"><input type="text" class="facilitas_search_input" placeholder="'+op.lang[op.language].sidebarSearch.input+'" title="'+op.lang[op.language].sidebarSearch.input+'" /> <button class="facilitas_btn_inputsearch" title="'+op.lang[op.language].sidebarSearch.button+'"><span class="fac-i-search"></span></button></form></div>'
                     +'  </header>'
                     +'  <ol class="facilitas_search_result"></ol>'
-                    +'</section>'
-                    +'<section class="facilitas_sidebar facilitas_settings">'
+                    +'</div>'
+                    +'<div class="facilitas_sidebar facilitas_settings">'
                     +'  <header>'
-                    +'      <div class="facilitas_sidebar_title" title="'+op.lang[op.language].sidebarSettings.title+'"><span>'+op.lang[op.language].sidebarSettings.title+'</span> <a href="#" class="facilitas_sidebar_close" title="'+op.lang[op.language].buttons.close+'"><i class="fac-i-close"></i></a></div>'
+                    +'      <div class="facilitas_sidebar_title" title="'+op.lang[op.language].sidebarSettings.title+'"><span class="title">'+op.lang[op.language].sidebarSettings.title+'</span> <button data-type="settings" class="facilitas_sidebar_close" title="'+op.lang[op.language].buttons.close+'"><span class="fac-i-close"></span></button></div>'
                     +'  </header>'
                     +'  <ul class="facilitas_sidebar_cont">'
                     +'      <li>'
@@ -320,9 +354,10 @@
                     +'          </div>'
                     +'      </li>'
                     +'  </ul>'
-                    +'</section>'
+                    +'</div>'
+                    +'<div class="facilitas_transcript"><header><span class="title">'+op.lang[op.language].sidebarTranscript.title+'</span> <button data-type="transcript" class="facilitas_sidebar_close" title="'+op.lang[op.language].buttons.close+'"><span class="fac-i-close"></span></button></header><ol></ol></div>'
                     +'<div class="facilitas_loading"><div class="facilitas_loading_img"></div></div>'
-                    +'<a href="#" class="facilitas_btn_light" title="'+op.lang[op.language].lights.turnOff+'"><i class="fac-i-light"></i></a>'
+                    +'<button class="facilitas_btn_light" title="'+op.lang[op.language].lights.turnOn+'"><span class="fac-i-light"></span></button>'
                     );
                 
                 // Video class
@@ -365,6 +400,12 @@
                 
                 // Prepare Subtitle
                 e.prepareSubtitle();
+
+                // Prepare audio description
+                e.prepareAudiodescription();
+                
+                // Prepare transcription
+                e.prepareTranscripts();
                 
                 // Check supports
                 e.checkSupport();
@@ -454,6 +495,35 @@
             op.facilitas_caption_search.height(total_height - 17);
             op.facilitas_search_result.height(total_height - op.facilitas_caption_search.find('header').height() - 12);
 
+            // Enable mouse event to fullscreen
+            if(op.supportsFullScreen) {
+                $(window).on('mousemove', function(e) {
+                    if(op.isFullscreen) {
+                        if(op.fullscreenToolbarHidden) {
+                            op.facilitas_progress.fadeIn(200);
+                            op.facilitas_toolbar.fadeIn(200);
+                            op.fullscreenToolbarHidden = false;
+                        }
+
+                        clearInterval(op.fullscreenTimer);
+                        op.fullscreenTimer = setInterval(function() { video.hideFullscreenToolbar(); }, op.fullscreenToolbarSpeed);
+                    }
+                });
+
+                op.facilitas_progress
+                    .on('mouseenter', function() {
+                        op.fullscreenToolbarHover = true;
+                    }).on('mouseleave', function() {
+                        op.fullscreenToolbarHover = false;
+                    });
+
+                op.facilitas_toolbar
+                    .on('mouseenter', function() {
+                        op.fullscreenToolbarHover = true;
+                    }).on('mouseleave', function() {
+                        op.fullscreenToolbarHover = false;
+                    });
+            }
         },
         /**
          * getInstances
@@ -504,6 +574,8 @@
             op.facilitas_fontbackground     = $('.facilitas_fontbackground',op.video_container);
             op.facilitas_fontcolor          = $('.facilitas_fontcolor',op.video_container);
             op.facilitas_fontsize           = $('.facilitas_fontsize',op.video_container);
+            op.facilitas_transcript         = $('.facilitas_transcript',op.video_container);
+            op.facilitas_transcript_btn     = $('.facilitas_transcript_btn',op.video_container);
         },
         
         /**
@@ -525,7 +597,7 @@
                     orientation: "horizontal",
                     range: "min",
                     max: video_duration,
-                    animate: true,					
+                    animate: true,                  
                     slide: function(e,ui){
                         video.timeUpdate(ui.value);
                         op.seekSliding = true;
@@ -580,13 +652,14 @@
                         var time = $(this).attr("href").substr(1);
 
                         // Transform into seconds
-                        var time = video.secondsTimeFormat(time);
+                        time = video.secondsTimeFormat(time);
 
                         // Calculate left position
-                        var leftPos = time*100/maxLength;
+                        var leftPos = time*100/maxLength,
+                            title = $(this).attr('title');
                         
                         // Append new sticker
-                        op.facilitas_stickers.append('<li style="left:'+leftPos+'%"><a href="#"></a></li>');
+                        op.facilitas_stickers.append('<li style="left:'+leftPos+'%"><a href="#" title="'+title+'"><span class="fac-sr-only">'+title+'</span></a></li>');
                     })
                 }
                 
@@ -657,19 +730,22 @@
             
             // Search sidebar toggle
             op.facilitas_search_btn.on("click", function(e) {
-               video.closeSidebar("search",function() {                   
                 video.toggleCaptionSearchSidebar();
-               });
 
-               e.preventDefault();
-               return false;
+                e.preventDefault();
+                return false;
             });
             // Settings sidebar toggle
             op.facilitas_settings_btn.on("click", function(e) {
-                video.closeSidebar("settings",function() {
-                    video.toggleSettingsSidebar();    
-                });
+                video.toggleSettingsSidebar();    
                
+                e.preventDefault();
+                return false;
+            });
+
+            // Settings sidebar toggle
+            op.facilitas_transcript_btn.on("click", function(e) {
+                video.toggleTranscriptSidebar();    
                 e.preventDefault();
                 return false;
             });
@@ -684,7 +760,8 @@
             
             // Sidebar close
             op.facilitas_sidebar_close.on("click", function(e) {
-               video.closeSidebar();
+                var type = $(this).attr('data-type');
+                video.closeSidebar(type);
                
                e.preventDefault();
                return false;
@@ -692,12 +769,14 @@
             
             
             // Mute button
-            op.facilitas_volume_btn.on("click", function(e) {
-                video.toggleMute(null);
-                
-                e.preventDefault();
-                return false;
-            });
+            op.facilitas_volume_btn
+                .on("click", function(e) {
+                    video.toggleMute(null);
+                    
+                    e.preventDefault();
+                    return false;
+                });
+
             op.facilitas_volume
                 // Volume enter
                 .on("mouseenter", function() {
@@ -891,11 +970,11 @@
             // Add Play Class
             video.$elem.bind("play", function() {
                 video.hideLoading();
-                op.facilitas_play.removeClass("facilitas_btn_play").addClass("facilitas_btn_pause").html('<i class="fac-i-pause"></i>');
+                op.facilitas_play.removeClass("facilitas_btn_play").addClass("facilitas_btn_pause").html('<span class="fac-i-pause"></span>');
             })
             // Add Pause Class 
             .bind("pause", function() {
-                op.facilitas_play.removeClass("facilitas_btn_pause").addClass("facilitas_btn_play").html('<i class="fac-i-play"></i>');
+                op.facilitas_play.removeClass("facilitas_btn_pause").addClass("facilitas_btn_play").html('<span class="fac-i-play"></span>');
             })
             
             // Change state Class
@@ -964,14 +1043,9 @@
                         video.play();
                         break;
 
-                    // R - Rewind
-                    case 82:
-                        video.rewind();
-                        break;
-
-                    // F - Forward
-                    case 70:
-                        video.forward();
+                    // T - Transcript
+                    case 84:
+                        video.toggleTranscriptSidebar();
                         break;
 
                     // C - Toggle Subtitle (Closed Caption)
@@ -979,26 +1053,40 @@
                         video.toggleSubtitle();
                         break;
 
-                    // T - Toggle Audio Description
-                    case 84:
+                    // A - Toggle Audio Description
+                    case 65:
+                        if(op.facilitas_audiodesc)
+                            video.toggleAdMute(null);
 
                         break;
 
-                    // A - Toggle Mute
-                    case 65:
+                    // M - Toggle Mute
+                    case 77:
                         video.toggleMute(null);
                         break;
 
-                    // U - Volume + 20%
-                    case 85:
+                    // V - Volume - 20%
+                    case 66:
                         if(op.init)
                             video.increaseVolume();
                         break;
 
-                    // D - Volume - 20%
-                    case 68:
+                    // B - Volume + 20%
+                    case 86:
                         if(op.init)
                             video.decreaseVolume();
+                        break;
+
+                    // Z - AD Volume - 20%
+                    case 88:
+                        if(op.init)
+                            video.increaseAdVolume();
+                        break;
+
+                    // X - AD Volume + 20%
+                    case 90:
+                        if(op.init)
+                            video.decreaseAdVolume();
                         break;
 
                     // S - Show Caption Search Sidebar
@@ -1006,8 +1094,8 @@
                         video.toggleCaptionSearchSidebar();
                         break;
 
-                    // L - Toggle Fullscreen
-                    case 76:
+                    // F - Toggle Fullscreen
+                    case 70:
                         video.toggleFullScreen();
                         break;
 
@@ -1021,8 +1109,8 @@
                         video.speedDown();
                         break;
 
-                    // O - Speed Up
-                    case 79:
+                    // R - Speed Up
+                    case 82:
                         video.speedUp();
                         break;
 
@@ -1031,13 +1119,13 @@
                         video.stop();
                         break;
 
-                    // [ - Rewind
-                    case 219:
+                    // Y - Rewind
+                    case 89:
                         video.rewind();
                         break;
 
-                    //  - Forward
-                    case 221:
+                    // U - Forward
+                    case 85:
                         video.forward();
                         break;
 
@@ -1124,8 +1212,8 @@
             // Title
             parentTag.find(".facilitas_sidebar_title")
                 .attr("title",op.lang[op.language].sidebarSearch.title)
-                .find("span").html(op.lang[op.language].sidebarSearch.title)
-                .siblings("a")
+                .find("span.title").html(op.lang[op.language].sidebarSearch.title)
+                .siblings("button")
                     .attr("title",op.lang[op.language].buttons.close);
 
             // Input
@@ -1138,14 +1226,21 @@
                 .attr("title",op.lang[op.language].sidebarSearch.button);
 
             /*************************************  
+             * Transcript Sidebar
+             */
+            op.facilitas_transcript
+                .find('span.title').html(op.lang[op.language].sidebarTranscript.title)
+                .siblings('button')
+                    .attr('title',op.lang[op.language].buttons.close);
+            /*************************************  
              * Settings Sidebar
              */
             parentTag = $(".facilitas_settings",e); 
             // Title
             parentTag.find(".facilitas_sidebar_title")
                 .attr("title",op.lang[op.language].sidebarSettings.title)
-                .find("span").html(op.lang[op.language].sidebarSettings.title)
-                .siblings("a")
+                .find("span.title").html(op.lang[op.language].sidebarSettings.title)
+                .siblings("button")
                     .attr("title",op.lang[op.language].buttons.close);
 
             // Language Select
@@ -1246,6 +1341,10 @@
             op.facilitas_cc
                 .attr("title",op.lang[op.language].toolbar.caption);
             
+            // Transcript
+            op.facilitas_transcript_btn
+                .attr("title",op.lang[op.language].toolbar.transcript);
+            
             // Settings
             op.facilitas_settings_btn
                 .attr("title",op.lang[op.language].toolbar.settings);
@@ -1273,15 +1372,19 @@
                     +'          <li title="P - '+op.lang[op.language].help.play+'"><strong>P</strong>'+op.lang[op.language].help.play+'</li>'
                     +'          <li title="Q - '+op.lang[op.language].help.stop+'"><strong>Q</strong>'+op.lang[op.language].help.stop+'</li>'
                     +'          <li title="S - '+op.lang[op.language].help.search+'"><strong>S</strong>'+op.lang[op.language].help.search+'</li>'
-                    +'          <li title="O - '+op.lang[op.language].help.speeddown+'"><strong>O</strong>'+op.lang[op.language].help.speeddown+'</li>'
-                    +'          <li title="E - '+op.lang[op.language].help.speedup+'"><strong>E</strong>'+op.lang[op.language].help.speedup+'</li>'
-                    +'          <li title="[ - '+op.lang[op.language].help.rewind+'"><strong>O</strong>'+op.lang[op.language].help.rewind+'</li>'
-                    +'          <li title="] - '+op.lang[op.language].help.forward+'"><strong>O</strong>'+op.lang[op.language].help.forward+'</li>'
+                    +'          <li title="E - '+op.lang[op.language].help.speeddown+'"><strong>E</strong>'+op.lang[op.language].help.speeddown+'</li>'
+                    +'          <li title="R - '+op.lang[op.language].help.speedup+'"><strong>R</strong>'+op.lang[op.language].help.speedup+'</li>'
+                    +'          <li title="T - '+op.lang[op.language].help.rewind+'"><strong>T</strong>'+op.lang[op.language].help.rewind+'</li>'
+                    +'          <li title="Y - '+op.lang[op.language].help.forward+'"><strong>Y</strong>'+op.lang[op.language].help.forward+'</li>'
+                    +'          <li title="T - '+op.lang[op.language].help.transcript+'"><strong>T</strong>'+op.lang[op.language].help.transcript+'</li>'
                     +'          <li title="C - '+op.lang[op.language].help.caption+'"><strong>C</strong>'+op.lang[op.language].help.caption+'</li>'
-                    +'          <li title="A - '+op.lang[op.language].help.volume+'"><strong>A</strong>'+op.lang[op.language].help.volume+'</li>'
-                    +'          <li title="D - '+op.lang[op.language].help.decreaseVol+'"><strong>D</strong>'+op.lang[op.language].help.decreaseVol+'</li>'
-                    +'          <li title="U - '+op.lang[op.language].help.increaseVol+'"><strong>U</strong>'+op.lang[op.language].help.increaseVol+'</li>'
-                    +'          <li title="L - '+op.lang[op.language].help.viewport+'"><strong>L</strong>'+op.lang[op.language].help.viewport+'</li>'
+                    +'          <li title="M - '+op.lang[op.language].help.volume+'"><strong>M</strong>'+op.lang[op.language].help.volume+'</li>'
+                    +'          <li title="V - '+op.lang[op.language].help.decreaseVol+'"><strong>V</strong>'+op.lang[op.language].help.decreaseVol+'</li>'
+                    +'          <li title="B - '+op.lang[op.language].help.increaseVol+'"><strong>B</strong>'+op.lang[op.language].help.increaseVol+'</li>'
+                    +'          <li title="A - '+op.lang[op.language].help.adVolume+'"><strong>A</strong>'+op.lang[op.language].help.adVolume+'</li>'
+                    +'          <li title="Z - '+op.lang[op.language].help.adDecreaseVol+'"><strong>Z</strong>'+op.lang[op.language].help.adDecreaseVol+'</li>'
+                    +'          <li title="X - '+op.lang[op.language].help.adIncreaseVol+'"><strong>X</strong>'+op.lang[op.language].help.adIncreaseVol+'</li>'
+                    +'          <li title="F - '+op.lang[op.language].help.viewport+'"><strong>F</strong>'+op.lang[op.language].help.viewport+'</li>'
                     +'          <li title="H - '+op.lang[op.language].help.help+'"><strong>H</strong>'+op.lang[op.language].help.help+'</li>');
             
             // About
@@ -1368,6 +1471,227 @@
         },
         
         /**
+         * Prepare to load audio description file
+         */
+        prepareAudiodescription: function() {
+            var video = this,
+                op = this.options,
+                audioList,
+                type,
+                ext;
+
+            if(op.audiodescription) {
+                // Get list of audios
+                audioList = op.audiodescription.split(';');
+
+                op.facilitas_audiodesc = $('<audio class="facilitas_audiodesc" preload="auto"></audio>');
+                for(var i in audioList) {
+                    ext = audioList[i].split('.');
+                    ext = ext[ext.length-1];
+                    switch(ext) {
+                        case "ogg":
+                            type = 'audio/ogg';
+                            break;
+                        case "mp3":
+                            type = 'audio/mpeg';
+                            break;
+                    }
+
+                    op.facilitas_audiodesc.append('<source src="'+audioList[i]+'" type="'+type+'"></source>');
+                }
+                op.video_container.append(op.facilitas_audiodesc);
+
+                // Append button
+                op.facilitas_search_btn.parent().before(+''
+                    +'          <li>'
+                    +'            <a href="javascript:void();" class="facilitas_btn_audiodesc" title="'+op.lang[op.language].toolbar.audiodesc+'">'
+                    +'              <span class="advol_status fac-i-audio-desc"></span>'
+                    +'              <div class="facilitas_btn_container ad"></div>'
+                    +'              <div class="facilitas_advol_container">'
+                    +'                  <div class="facilitas_advol_wrapper">'
+                    +'                      <div class="facilitas_control_advolume_slider"></div>'
+                    +'                  </div>'
+                    +'              </div>'
+                    +'            </a>'
+                    +'          </li>');
+                    // <li><button class="facilitas_btn_audiodesc" title="'+op.lang[op.language].toolbar.audiodesc+'"><span class="fac-i-audio-desc"></span></button></li>');
+                op.facilitas_audiodesc_btn = op.video_container.find('.facilitas_btn_audiodesc');
+
+
+                // Get Instances
+                op.facilitas_advolume             = $('.facilitas_btn_audiodesc',op.video_container);
+                op.facilitas_advolume_btn         = $('.facilitas_btn_container.ad',op.video_container);
+                op.facilitas_advolume_status      = $('.advol_status',op.video_container);
+                op.facilitas_advolume_slider      = $('.facilitas_control_advolume_slider',op.video_container);
+                op.facilitas_advolume_cont        = $('.facilitas_advol_container',op.video_container);
+
+                // Initialize volume slider
+                op.facilitas_advolume_slider.slider({
+                    // Default initial volume
+                    value: op.initAdVolume,
+                    orientation: "vertical",
+                    range: "min",
+                    max: 1,
+                    step: 0.1,
+                    animate: true,
+                    slide:function(e,ui){
+                        video.toggleAdMute(ui.value);
+                    }
+                });
+
+                // Sets initial volume
+                op.facilitas_audiodesc.prop("volume",op.initAdVolume);
+
+                // Bind events
+                op.facilitas_advolume
+                    // Volume enter
+                    .on("mouseenter", function() {
+                        video.showAdVolumeBar();
+                    })
+                    // Volume leave
+                    .on("mouseleave", function() {
+                        video.hideAdVolumeBar();
+                    })
+                    .on("click", function(e) {
+                        video.toggleAdMute(null);
+                        
+                        e.preventDefault();
+                        return false;
+                    });
+
+                // Update volume
+                op.facilitas_audiodesc.bind('volumechange', function() {
+                     video.adVolumeUpdate();
+                })
+
+                // Start Listeners
+                video.startAudiodescListeners();
+            }
+        },
+
+        /**
+         * Load and prepare video transcript file
+         */
+        prepareTranscripts: function() {
+            var video = this,
+                op = this.options,
+                transcriptSrc;
+
+            // Find all tracks
+            video.$elem.children().each(function() {
+                var el = $(this).get(0);
+                if(el.nodeName.toLowerCase() == "track" && el.getAttribute("kind") == "transcript") {
+                    // Get source
+                    transcriptSrc = el.getAttribute("src");
+                }
+            });
+
+
+            // Check if any src has been found
+            if(transcriptSrc) {
+                // Check if it's a srt file
+                if(transcriptSrc.indexOf(".txt") != -1) {
+                    // Load transcript
+                    $.get(transcriptSrc, function(data) {
+                        if(data.length > 0) {
+                            // Initialize
+                            op.transcripts = new Array();
+                            
+                            // Get all entries
+                            var entries = data.split('\n'),
+                                n = entries.length,
+                                parent = op.facilitas_transcript.find('ol'),
+                                id = 'fac-'+Date.now();
+
+                            op.facilitas_transcript.attr('id', id);
+
+                            // Store total
+                            op.transcriptTotal = n;
+
+                            // Append to DOM
+                            for(var i in entries)
+                                parent.append('<li>'+entries[i]+'</li>');
+                            
+                            // Enable transcript button
+                            video.enableTranscriptBtn();
+
+                            // Start weblibras, if available
+                            if(typeof(WebLibras) == 'function')
+                                new WebLibras('#'+id);
+
+                        } else {
+                            video.disableBtn(op.facilitas_transcript_btn);
+                            if (op.debug) video.trace("Invalid transcript source. Maybe using a cross-domain source?"); 
+                        }
+                    });
+                } else {
+                    video.disableBtn(op.facilitas_transcript_btn);
+                    if(op.debug) video.trace("Not a valid subtitle source. File must be \".srt\"."); 
+                }
+            } else {
+                video.disableBtn(op.facilitas_transcript_btn);
+                if(op.debug) video.trace("No transcript track found."); 
+            }
+        },
+
+        /**
+         * Create listeners to sync video and audio description
+         */
+        startAudiodescListeners: function() {
+            var $video = this.$elem,
+                $ad = this.options.facilitas_audiodesc,
+                video = this,
+                videoElem = this.$elem[0],
+                audio = $ad[0],
+                handler = null; // Handler will be used so it doesn't end in a infinite event loop
+
+            // Video listeners
+            $video
+                .on('play', function() {
+                    audio.play();
+
+                    if(handler == 'ad')
+                        handler = null;
+                    else
+                        handler = 'video';
+                })
+                .on('pause', function(){
+                    audio.pause();
+
+                    if(handler == 'ad')
+                        handler = null;
+                    else
+                        handler = 'video';
+                });
+
+            // Detect time update through slidebar
+            $(window).on('fac-ad-updateTime', function() {
+                $ad.prop('currentTime', $video.prop('currentTime'));
+            });
+
+            // Audio Description Listeners - in case audio stops to buffer
+            $ad
+                .on('play', function() {
+                    if(handler == 'video') {
+                        handler = null;
+                    } else {
+                        handler = 'ad';
+                        videoElem.play();
+                        video.hideLoading();
+                    }
+                })
+                .on('pause', function(){
+                    if(handler == 'video') {
+                        handler = null;
+                    } else {
+                        handler = 'ad';
+                        videoElem.pause();
+                        video.showLoading();
+                    }
+                });
+        },
+
+        /**
          * Play
          * @desc Toggle between Play/Stop the video
          */
@@ -1393,6 +1717,9 @@
             
             video.pause();
             video.currentTime = 0;
+
+            if(this.options.audiodescription)
+                this.options.facilitas_audiodesc[0].currentTime = 0;
         },
 
         /**
@@ -1424,25 +1751,23 @@
             var tag = op.facilitas_cc;
             
             // Check if it's disabled
-            if(tag.hasClass("facilitas_btn_cc_disabled")) {
+            if(tag.hasClass("disabled")) {
                 // Show
-                tag.removeClass("facilitas_btn_cc_disabled");
+                tag.removeClass("disabled");
                 op.facilitas_subtitle.show();
             } else {
                 // Hide
-                tag.addClass("facilitas_btn_cc_disabled");
+                tag.addClass("disabled");
                 op.facilitas_subtitle.hide();
             }
         },
         
-        
         /**
-         * toggleMute
-         * @desc Mute/unmute 
+         * Toggles mute/unmute on volume bar
          */
         toggleMute: function(val) {
-            var video = this;
-            var op = this.options;
+            var video = this,
+                op = this.options;
             if (val > 0){
                 // Remove class
                 op.facilitas_volume_status.removeClass('fac-i-sound-muted');
@@ -1481,6 +1806,57 @@
                     
                     // Zero volume
                     video.$elem.prop('volume',0);
+                }
+            }
+        },
+        
+        /**
+         * Toggles mute/unmute on ad volume bar
+         */
+        toggleAdMute: function(val) {
+            var video = this,
+                op = this.options
+                $ad = op.facilitas_audiodesc;
+
+            if (val > 0){
+                // Remove class
+                op.facilitas_advolume_status.removeClass('fac-i-audio-desc-mute').addClass('fac-i-audio-desc');
+                
+                // Unmute
+                $ad
+                    .prop('muted',false)
+                    .prop("volume",val);
+                
+            } else {
+                if($ad.prop("muted") == true) {
+                    // Remove class
+                    op.facilitas_advolume_status
+                        .removeClass('fac-i-audio-desc-mute')
+                        .addClass('fac-i-audio-desc');
+
+                    // Unmute
+                    $ad.prop('muted',false);
+                    
+                    // Check if it has an old value
+                    if(op.oldAdVol != null) {
+                        $ad.prop("volume",op.oldAdVol);
+                        op.oldAdVol = null;
+                    }
+                    
+                } else {
+                    // Store old value
+                    op.oldAdVol = op.facilitas_advolume_slider.slider('value');
+                    
+                     // Add class
+                    op.facilitas_advolume_status
+                        .removeClass('fac-i-audio-desc')
+                        .addClass('fac-i-audio-desc-mute');
+                    
+                    // Mute
+                    $ad.prop('muted',true);
+                    
+                    // Zero volume
+                    $ad.prop('volume',0);
                 }
             }
         },
@@ -1679,6 +2055,22 @@
             this.options.facilitas_volume_cont.hide();
         },
 
+         /**
+         * Show ad volume bar
+         */
+        showAdVolumeBar: function() {
+            // Show
+            this.options.facilitas_advolume_cont.show();
+        },
+        
+        /**
+         * Hide ad volume bar
+         */
+        hideAdVolumeBar: function() {
+            // Hide bar
+            this.options.facilitas_advolume_cont.hide();
+        },
+
         /**
          * increaseVolume
          * @desc Increases volume in 20%
@@ -1716,15 +2108,54 @@
             }
         },
         
+        /**
+         * Increases ad volume in 20%
+         */
+        increaseAdVolume: function() {
+            var op = this.options,
+            // Get current volume
+                vol = op.facilitas_advolume_slider.slider('value'),
+                $ad = op.facilitas_audiodesc;
+
+            // Increase 20%
+            if(vol == 0) {
+                this.toggleAdMute();
+                vol = 0.2;
+            } else {
+                vol = (vol+0.2 > 1)? 1 : vol+0.2;    
+            }
+            // Update volume
+            $ad.prop("volume",vol);
+        },
+
+        /**
+         * Decreases ad volume in 20%
+         */
+        decreaseAdVolume: function() {
+            var op = this.options,
+            // Get current volume
+                vol = op.facilitas_advolume_slider.slider('value'),
+                $ad = op.facilitas_audiodesc;
+
+            // Decrease 20%
+            if(vol-0.2 <= 0) {
+                // Mute
+                this.toggleAdMute();
+            } else {
+                // Update volume
+                $ad.prop("volume",vol-0.2);
+            }
+        },
+        
         
         /**
          * cancelFullScreen
          * @desc Cancels fullscreen mode
          */
         cancelFullScreen: function() {
-            var video = this;
-            var op = video.options;
-            if(op.isFullScreen) {
+            var video = this,
+                op = video.options;
+            if(op.isFullscreen) {
                 // Return to normal width
                 video.$elem.width(video.$elem.prop("width"));
 
@@ -1736,13 +2167,21 @@
                     document[op.browserPrefix+"CancelFullScreen"]();
                 }
                 // Defines it's not in fullscreen mode
-                op.isFullScreen = false;
+                op.isFullscreen = false;
 
                 // Change button class, title and value
                 op.facilitas_viewport
                     .removeClass("facilitas_btn_viewport_close")
                     .attr("title",op.lang[op.language].toolbar.viewport)
-                    .html('<i class="fac-i-fullscreen-open"></i>');
+                    .html('<span class="fac-i-fullscreen-open"></span>');
+
+                video.cancelFullscreenTimer();
+
+                if(op.fullscreenToolbarHidden) {
+                    op.facilitas_progress.fadeIn(200);
+                    op.facilitas_toolbar.fadeIn(200);
+                    op.fullscreenToolbarHidden = false;
+                }
             }
         },
         
@@ -1754,7 +2193,7 @@
         toggleFullScreen : function() {
             var op = this.options;
             if(op.supportsFullScreen) {
-                if(op.isFullScreen) {
+                if(op.isFullscreen) {
                     this.cancelFullScreen();
                 } else {
                     this.enableFullScreen();
@@ -1766,15 +2205,46 @@
         },
 
         /**
+         * Hide progress bar and toolbar on full screen
+         */
+        hideFullscreenToolbar: function() {
+            var op = this.options;
+
+
+            if(op.isFullscreen && !op.fullscreenToolbarHidden && !op.fullscreenToolbarHover) {
+                op.facilitas_progress.fadeOut(200);
+                op.facilitas_toolbar.fadeOut(200);
+                op.fullscreenToolbarHidden = true;
+            }
+        },
+
+        /**
+         * Set interval to display progress bar and toolbar on mouse movement while in fullscreen
+         */
+        startFullscreenTimer: function() {
+            var video = this,
+                op = video.options;
+
+            op.fullscreenTimer = setInterval(function() { video.hideFullscreenToolbar(); }, op.fullscreenToolbarSpeed);
+        },
+
+        /**
+         * Remove timer from fullscreen mode
+         */
+        cancelFullscreenTimer: function() {
+            clearInterval(this.options.fullscreenTimer);
+        },
+
+        /**
          * enableSubtitleBtn
          * @desc Enables subtitle (closed caption) button if subtitle was successfully loaded
          */
         enableSubtitleBtn: function() {
-            var video = this;
-            var op = video.options;
+            var video = this,
+                op = video.options;
             
             // Remove opacity
-            op.facilitas_cc.removeClass('facilitas_btn_cc_disabled');
+            op.facilitas_cc.removeClass('disabled');
 
             // Add subtitle event
             op.facilitas_cc.off().on("click", function(e) {
@@ -1785,13 +2255,32 @@
         },
 
         /**
+         * enableTranscriptBtn
+         * @desc Enables transcript button if transcript was successfully loaded
+         */
+        enableTranscriptBtn: function() {
+            var video = this,
+                op = video.options;
+            
+            // Remove opacity
+            op.facilitas_transcript_btn.removeClass('disabled');
+
+            // Add subtitle event
+            op.facilitas_transcript_btn.off().on("click", function(e) {
+                video.toggleTranscriptSidebar();
+
+                e.preventDefault(); return false;
+            })
+        },
+
+        /**
          * enableFullScreen
          * @desc Enables fullscreen mode
          */
         enableFullScreen: function() {
-            var video = this;
-            var op = video.options;
-            if(!op.isFullScreen) {
+            var video = this,
+                op = video.options;
+            if(!op.isFullscreen) {
                 // Enable 100% width
                 video.$elem.width("100%");
                 
@@ -1803,13 +2292,13 @@
                     op.video_container[0][op.browserPrefix+"RequestFullScreen"]();
                 }
                 // Defines it's in fullscreen mode
-                op.isFullScreen = true;
+                op.isFullscreen = true;
 
                 // Change button class, title and value
                 op.facilitas_viewport
                     .addClass("facilitas_btn_viewport_close")
                     .attr("title",op.lang[op.language].toolbar.viewportClose)
-                    .html('<i class="fac-i-fullscreen-close"></i>');
+                    .html('<span class="fac-i-fullscreen-close"></span>');
 
                 // Enable fullscreen change event
                 $(document).on("fullscreenchange mozfullscreenchange webkitfullscreenchange", function() {
@@ -1818,11 +2307,20 @@
                     
                     // Check if it's no longer in fullscreen
                     if(!video.fullScreenStatus()) {
+                        op.isFullscreen = false;
+                        video.cancelFullscreenTimer();
+                        if(op.fullscreenToolbarHidden) {
+                            op.facilitas_progress.fadeIn(200);
+                            op.facilitas_toolbar.fadeIn(200);
+                            op.fullscreenToolbarHidden = false;
+                        }
                         video.$elem.width(video.$elem.prop("width"));
                     }
                     // Update subtitle font size
                     video.subtitleFontUpdate()
                 });
+
+                video.startFullscreenTimer();
             }
         },
 
@@ -1868,10 +2366,12 @@
          * @desc Closes any sidebar
          */
         closeSidebar: function(type,callback) {
-            if(this.options.sidebar_captionsearch && type != "search")
+            if(this.options.sidebar_captionsearch && type == "search")
                 this.hideCaptionSearchSidebar(function() { if(callback) callback(); });
-            else if (this.options.sidebar_settings && type != "settings")
+            else if (this.options.sidebar_settings && type == "settings")
                 this.hideSettingsSidebar(function() { if(callback) callback(); });
+            else if (this.options.sidebar_transcript && type == "transcript")
+                this.hideTranscriptSidebar(function() { if(callback) callback(); });
             
             else if(callback) callback();
         },
@@ -1897,6 +2397,7 @@
          * @desc Displays caption search sidebar
          */
         showCaptionSearchSidebar: function(callback) {
+            this.hideSettingsSidebar();
             var op = this.options;
             var width = this.options.facilitas_caption_search.width()*(-1) -2;
             op.facilitas_caption_search.animate({right: width},200, function() {
@@ -1906,20 +2407,19 @@
             });
         },
         /**
-         * hideCaptionSearchSidebar
-         * @desc Hides settings sidebar
+         * Hides settings sidebar
          */
         hideCaptionSearchSidebar: function(callback) {
             var op = this.options;
             op.facilitas_caption_search.animate({right:0},200, function() {
                 op.sidebar_captionsearch = false;
+                op.facilitas_search_btn.focus();
                 if(callback) callback();
             });
         },
         
         /**
-         * toggleSettingsSidebar
-         * @desc Toggles settings sidebar
+         * Toggles settings sidebar
          */
         toggleSettingsSidebar: function(callback) {
             this.cancelFullScreen();
@@ -1929,28 +2429,66 @@
             else
                 this.showSettingsSidebar(function() {if(callback) callback();});
         },
+
+        /**
+         * Toggles Transcript sidebar
+         */
+        toggleTranscriptSidebar: function(callback) {
+            this.cancelFullScreen();
+
+            if(this.options.sidebar_transcript)
+                this.hideTranscriptSidebar(function() {if(callback) callback();});
+            else
+                this.showTranscriptSidebar(function() {if(callback) callback();});
+        },
         
         /**
-         * showSettingsSidebar
-         * @desc Displays settings sidebar
+         * Displays settings sidebar
          */
         showSettingsSidebar: function(callback) {
-            var op = this.options;
-            var width = this.options.facilitas_settings.width()*(-1) -2;
+            this.hideCaptionSearchSidebar();
+            var op = this.options,
+                width = this.options.facilitas_settings.width()*(-1) -2;
             op.facilitas_settings.animate({right: width},200, function() {
                 op.sidebar_settings = true;
+                op.facilitas_settings.find('select').first().focus();    
                 if(callback) callback();
             });
         },
         
         /**
-         * hideSettingsSidebar
-         * @desc Hides settings sidebar
+         * Hides settings sidebar
          */
         hideSettingsSidebar: function(callback) {
             var op = this.options;
             op.facilitas_settings.animate({right:0},200, function(){
                 op.sidebar_settings = false;
+                op.facilitas_settings_btn.focus();
+                if(callback) callback();
+            });
+        },
+
+
+        /**
+         * Displays settings sidebar
+         */
+        showTranscriptSidebar: function(callback) {
+            var op = this.options,
+                width = this.options.facilitas_transcript.width()*(-1) -2;
+
+            op.facilitas_transcript.animate({left: width},200, function() {
+                op.sidebar_transcript = true;
+                if(callback) callback();
+            });
+        },
+        /**
+         * Hides transcript sidebar
+         */
+        hideTranscriptSidebar: function(callback) {
+            var op = this.options;
+            op.facilitas_transcript.animate({left:0},200, function(){
+                op.sidebar_transcript = false;
+                op.facilitas_transcript_btn.focus();
                 if(callback) callback();
             });
         },
@@ -1996,9 +2534,11 @@
          */
         disableBtn: function(dom) {
             var v = this;
-            dom.addClass('disabled')
+            dom.addClass('disabled');
             dom.off().on("click", function(e) {
-                v.trace("Your browser doesn't support this feature.");
+                if(v.options.debug)
+                    v.trace("No file provided or your browser doesn't support this feature.");
+
                 e.preventDefault();
                 return false;
             });
@@ -2036,6 +2576,9 @@
             
             // Get target time
             video.currentTime = target;
+
+            // Update audiodescription
+            $.event.trigger('fac-ad-updateTime');
         },
         /**
          * goTo
@@ -2123,13 +2666,20 @@
             
         },
         /**
-         * volumeUpdate
-         * @desc Updates volume bar position
+         * Volume Update
          */
         volumeUpdate: function() {
             var video = this.options.videoObject;
             // Reference
             this.options.facilitas_volume_slider.slider('value', video.volume);
+        },
+        /**
+         * Ad Volume Update
+         */
+        adVolumeUpdate: function() {
+            var $ad = this.options.facilitas_audiodesc;
+            // Reference
+            this.options.facilitas_advolume_slider.slider('value', $ad[0].volume);
         },
         
         /**
@@ -2140,18 +2690,52 @@
             var video = this,
                 op = this.options,
                 currentTime = video.$elem.prop("currentTime"),
-                text = "";
+                text = "",
+                transcript = null,
+                li,
+                current = op.currentSubtitleLine, 
+                now = op.newSubtitleLine,
+                tmp = null,
+                oldPos = 0, 
+                pos;
+
+
+            if(op.transcripts)
+                transcript = op.facilitas_transcript.find('li');
             
             // Check if current subtitle is within time
             for(i=0;i<op.subtitleTotal;i++) {
                 if(video.subtitleGetTime(op.subtitle[i][1],"min") < currentTime
                    && video.subtitleGetTime(op.subtitle[i][1],"max") > currentTime) {
                     text = op.subtitle[i][2];
+                    op.newSubtitleLine = i;
+                    tmp = i;
+                }
+
+                if(op.currentSubtitleLine != op.newSubtitleLine) {
+                    op.facilitas_transcript.find('li.highlight').removeClass('highlight');
+
+                    if(typeof(transcript[op.newSubtitleLine]) !== 'undefined') {
+                        pos = $(transcript[op.newSubtitleLine]).position().top;
+
+                        if(pos != oldPos) {
+                            op.facilitas_transcript.animate({scrollTop: pos},200);
+                            oldPos = pos;
+                        }
+                        transcript[op.newSubtitleLine].className = 'highlight';
+
+                    }
+                    if(typeof(op.newSubtitleLine) !== 'undefined') {
+                        op.currentSubtitleLine = op.newSubtitleLine;
+
+                        // Update text
+                        op.facilitas_subtitle.html(text).attr('title',text);
+                    }
                 }
             }
             
-            // Update text
-            op.facilitas_subtitle.html(text);
+            if(tmp == null)
+                op.facilitas_subtitle.html('').attr('title', '');
         },
         
         /**
