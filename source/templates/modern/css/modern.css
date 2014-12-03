@@ -25,7 +25,7 @@
 .facilitas_modern > .facilitas_toolbar {background:#232323;border-top:1px solid #3d3d3d;}
 .facilitas_modern .facilitas_controls {display:inline-block;text-align:left;width:auto;float:left;height:50px;padding:0 3px;margin-top:2px;}
 .facilitas_modern .facilitas_controls.fr {float:right !important;}
-.facilitas_modern .facilitas_controls > li {display:inline-block;float:left;height:45px;width:50px;border-left:1px solid #201f3f;text-align:center;position:relative;}
+.facilitas_modern .facilitas_controls > li {display:inline-block;float:left;height:45px;width:50px;text-align:center;position:relative;}
 .facilitas_modern .facilitas_controls > li:last-child {width:36px;}
 .facilitas_modern .facilitas_controls > li:first-child {margin-left:2px;}
 .facilitas_modern .facilitas_controls > li button,
